@@ -1,39 +1,66 @@
 <script lang="ts">
-  import Greet from './lib/Greet.svelte'
+  import DocList from "./components/DocList.svelte";
+  import DocView from "./components/DocView.svelte";
+  import SegmentList from "./components/SegmentList.svelte";
+  import TagList from "./components/TagList.svelte";
+  import { selectedDoc } from "./store";
 </script>
 
 <main class="container">
-  <h1>Welcome to Tauri!</h1>
-
-  <div class="row">
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte" alt="Svelte Logo" />
-    </a>
+  <div class="tag-pane">
+    <section>
+      <h2>Docs</h2>
+      <DocList />
+    </section>
+    <section>
+      <h2>Tags</h2>
+      <TagList />
+    </section>
   </div>
-
-  <p>
-    Click on the Tauri, Vite, and Svelte logos to learn more.
-  </p>
-
-  <div class="row">
-    <Greet />
+  <div class="doc-title">
+    <h2>{$selectedDoc?.title ?? ""}</h2>
   </div>
-
-
+  <div class="segment-pane"><SegmentList /></div>
+  <div class="doc-pane"><DocView /></div>
 </main>
 
 <style>
-  .logo.vite:hover {
-    filter: drop-shadow(0 0 2em #747bff);
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr;
+    height: 100%;
+    grid-template-areas: "sidebar title title" "sidebar segments doc";
+    grid-template-rows: 3rem 1fr;
   }
 
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00);
+  .doc-title {
+    grid-area: title;
+    border-bottom: 1px solid hsl(0 0% 100% / 20%);
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .tag-pane {
+    grid-area: sidebar;
+  }
+
+  .segment-pane {
+    grid-area: segments;
+  }
+
+  .doc-pane {
+    grid-area: doc;
+  }
+
+  .tag-pane,
+  .segment-pane {
+    border-right: 1px solid hsl(0 0% 100% / 20%);
+  }
+
+  .tag-pane,
+  .segment-pane,
+  .doc-pane {
+    padding: 1rem;
   }
 </style>
