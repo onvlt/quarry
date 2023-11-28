@@ -1,11 +1,12 @@
 <script lang="ts">
   import { selectedDoc } from "../store";
+  import SegmentView from "./SegmentView.svelte";
 </script>
 
 {#if $selectedDoc !== null}
   <ul>
     {#each $selectedDoc.segments as segment}
-      <li>{segment.span[0]} – {segment.span[1]}</li>
+      <SegmentView {segment} doc={$selectedDoc} />
     {/each}
   </ul>
 {/if}
