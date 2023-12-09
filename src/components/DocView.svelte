@@ -1,40 +1,36 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { selectedDoc } from "../store";
-  import { EditorView, basicSetup } from "codemirror";
-  import { EditorState, Transaction } from "@codemirror/state";
+  import type { Doc } from "../types";
+  import Button from "../ui/Button.svelte";
+  import Editor from "./Editor.svelte";
 
-  onMount(() => {
-    const editor = new EditorView({
-      parent: document.querySelector("#doc")!,
-      extensions: [
-        EditorView.lineWrapping,
-        EditorView.updateListener.of((event) => {
-          // TODO: do something
-          console.log(event.state.doc.toString());
-        }),
-      ],
-    });
+  export let doc: Doc;
 
-    selectedDoc.subscribe((doc) => {
-      if (doc) {
-        const transaction = editor.state.update({
-          changes: {
-            from: 0,
-            insert: doc.content,
-          },
-        });
+  $: editMode = false;
 
-        editor.dispatch(transaction);
-      }
-    });
-  });
+  function toggleEditMode() {
+    editMode = !editMode;
+  }
 </script>
 
-<div class="codemirror" id="doc" />
+<div class="toolbar">
+  <Button active={editMode} on:click={toggleEditMode}>Edit</Button>
+</div>
+
+<div>
+  {#if editMode}
+    <Editor content={doc.content} />
+  {:else}
+    <div class="doc">{doc.content}</div>
+  {/if}
+</div>
 
 <style>
-  .codemirror {
-    display: contents;
+  .toolbar {
+    border-bottom: 1px solid var(--gray-4);
+    padding: 0.5rem;
+  }
+  .doc {
+    white-space: pre-wrap;
+    padding: 1rem;
   }
 </style>

@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { selectedDoc } from "../store";
+  import type { Doc } from "../types";
   import NavItem from "../ui/NavItem.svelte";
   import NavList from "../ui/NavList.svelte";
   import SegmentView from "./SegmentView.svelte";
+
+  export let doc: Doc;
 </script>
 
-{#if $selectedDoc !== null}
-  <NavList>
-    {#each $selectedDoc.segments as segment}
-      <NavItem>
-        <SegmentView {segment} doc={$selectedDoc} />
-      </NavItem>
-    {/each}
-  </NavList>
-{/if}
+<NavList>
+  {#each doc.segments as segment}
+    <NavItem>
+      <SegmentView {doc} {segment} />
+    </NavItem>
+  {/each}
+</NavList>

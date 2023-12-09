@@ -16,19 +16,25 @@
       <TagList />
     </Section>
   </div>
-  <div class="doc-title">
-    <h2>{$selectedDoc?.title ?? ""}</h2>
-  </div>
-  <div class="segment-pane"><SegmentList /></div>
-  <div class="doc-pane"><DocView /></div>
+  {#if $selectedDoc}
+    <div class="doc-title">
+      <h2>{$selectedDoc?.title ?? ""}</h2>
+    </div>
+    <div class="segment-pane">
+      <SegmentList doc={$selectedDoc} />
+    </div>
+    <div class="doc-pane">
+      <DocView doc={$selectedDoc} />
+    </div>
+  {/if}
 </main>
 
 <style>
   .container {
     display: grid;
-    grid-template-columns: 1fr 2fr 3fr;
+    grid-template-columns: 1fr 3fr 2fr;
     height: 100%;
-    grid-template-areas: "sidebar title title" "sidebar segments doc";
+    grid-template-areas: "sidebar title title" "sidebar doc segments";
     grid-template-rows: 3rem 1fr;
     --border-color: var(--gray-5);
   }
@@ -57,14 +63,16 @@
     max-width: 600px;
   }
 
-  .tag-pane,
-  .segment-pane {
+  .tag-pane {
     border-right: 1px solid var(--border-color);
   }
 
+  .segment-pane {
+    border-left: 1px solid var(--border-color);
+  }
+
   .tag-pane,
-  .segment-pane,
-  .doc-pane {
+  .segment-pane {
     padding: 1rem;
   }
 </style>
