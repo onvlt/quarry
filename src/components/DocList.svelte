@@ -1,6 +1,8 @@
 <script lang="ts">
   import { docs, selectedDoc } from "../store";
   import type { Doc } from "../types";
+  import NavItem from "../ui/NavItem.svelte";
+  import NavList from "../ui/NavList.svelte";
 
   function onClick(event: Event, doc: Doc) {
     event.preventDefault();
@@ -8,10 +10,13 @@
   }
 </script>
 
-<ul>
+<NavList>
   {#each $docs as doc}
-    <li>
-      <a on:click={(event) => onClick(event, doc)}>{doc.title}</a>
-    </li>
+    <NavItem
+      on:click={(event) => onClick(event, doc)}
+      active={$selectedDoc?.id === doc.id}
+    >
+      {doc.title}
+    </NavItem>
   {/each}
-</ul>
+</NavList>

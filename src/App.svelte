@@ -31,11 +31,12 @@
     height: 100%;
     grid-template-areas: "sidebar title title" "sidebar segments doc";
     grid-template-rows: 3rem 1fr;
+    --border-color: var(--gray-5);
   }
 
   .doc-title {
     grid-area: title;
-    border-bottom: 1px solid hsl(0 0% 100% / 20%);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -56,7 +57,7 @@
 
   .tag-pane,
   .segment-pane {
-    border-right: 1px solid hsl(0 0% 100% / 20%);
+    border-right: 1px solid var(--border-color);
   }
 
   .tag-pane,

@@ -4,76 +4,102 @@
   line-height: 24px;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+  color: var(--gray-12);
+  background-color: var(--gray-1);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --gray-1: #fcfcfd;
+  --gray-2: #f9f9fb;
+  --gray-3: #f0f0f3;
+  --gray-4: #e8e8ec;
+  --gray-5: #e0e1e6;
+  --gray-6: #d9d9e0;
+  --gray-7: #cdced6;
+  --gray-8: #b9bbc6;
+  --gray-9: #8b8d98;
+  --gray-10: #80838d;
+  --gray-11: #60646c;
+  --gray-12: #1c2024;
+
+  --accent-1: #fbfdff;
+  --accent-2: #f4faff;
+  --accent-3: #e6f4fe;
+  --accent-4: #d5efff;
+  --accent-5: #c2e5ff;
+  --accent-6: #acd8fc;
+  --accent-7: #8ec8f6;
+  --accent-8: #5eb1ef;
+  --accent-9: #0090ff;
+  --accent-10: #0588f0;
+  --accent-11: #0d74ce;
+  --accent-12: #113264;
+
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+
+  --radius-md: 0.5rem;
 }
 
 body {
   margin: 0;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
 }
 
-input,
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  text-align: inherit;
   cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
   outline: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
   padding: 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
+    --gray-1: #111113;
+    --gray-2: #18191b;
+    --gray-3: #212225;
+    --gray-4: #272a2d;
+    --gray-5: #2e3135;
+    --gray-6: #363a3f;
+    --gray-7: #43484e;
+    --gray-8: #5a6169;
+    --gray-9: #696e77;
+    --gray-10: #777b84;
+    --gray-11: #b0b4ba;
+    --gray-12: #edeef0;
 
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
+    --accent-1: #0d1520;
+    --accent-2: #111927;
+    --accent-3: #0d2847;
+    --accent-4: #003362;
+    --accent-5: #004074;
+    --accent-6: #104d87;
+    --accent-7: #205d9e;
+    --accent-8: #2870bd;
+    --accent-9: #0090ff;
+    --accent-10: #3b9eff;
+    --accent-11: #70b8ff;
+    --accent-12: #c2e6ff;
   }
 }

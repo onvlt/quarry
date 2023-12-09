@@ -10,6 +10,7 @@ export const tags = writable<Array<Tag>>([
 
 export const docs = writable<Array<Doc>>([
   {
+    id: 1,
     title: "Bubny-zátory",
     content: `Celý areál je obehnaný plotem nebo zátarasami s nápisy stavebních společností. Ploty jsou zpravidla neprůhledné, není dovnitř snadno vidět, jen lze místy občas prohlédnout škvírami mezi díly plotu. Podél bunenské vede mezi silnicí a plotem parkoviště ohrazené pletivem.
 
@@ -27,6 +28,7 @@ Kolem mě jde parta dětí a smějí se se ceduli „chodník zde končí, přej
     ],
   },
   {
+    id: 2,
     title: "Bubny-zátory 2",
     content: `Haha Celý areál je obehnaný plotem nebo zátarasami s nápisy stavebních společností. Ploty jsou zpravidla neprůhledné, není dovnitř snadno vidět, jen lze místy občas prohlédnout škvírami mezi díly plotu. Podél bunenské vede mezi silnicí a plotem parkoviště ohrazené pletivem.
 
