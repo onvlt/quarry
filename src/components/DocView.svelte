@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Doc } from "../types";
   import Button from "../ui/Button.svelte";
+  import DocAggregator from "./DocAggregator.svelte";
   import Editor from "./Editor.svelte";
 
   export let doc: Doc;
@@ -20,7 +21,7 @@
   {#if editMode}
     <Editor content={doc.content} />
   {:else}
-    <div class="doc">{doc.content}</div>
+    <DocAggregator {doc} />
   {/if}
 </div>
 
@@ -28,9 +29,5 @@
   .toolbar {
     border-bottom: 1px solid var(--gray-4);
     padding: 0.5rem;
-  }
-  .doc {
-    white-space: pre-wrap;
-    padding: 1rem;
   }
 </style>
