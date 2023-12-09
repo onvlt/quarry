@@ -51,6 +51,7 @@
 
   .doc-pane {
     grid-area: doc;
+    max-width: 600px;
   }
 
   .tag-pane,
