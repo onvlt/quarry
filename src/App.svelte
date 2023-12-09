@@ -4,18 +4,17 @@
   import SegmentList from "./components/SegmentList.svelte";
   import TagList from "./components/TagList.svelte";
   import { selectedDoc } from "./store";
+  import Section from "./ui/Section.svelte";
 </script>
 
 <main class="container">
   <div class="tag-pane">
-    <section>
-      <h2>Docs</h2>
+    <Section title="Docs">
       <DocList />
-    </section>
-    <section>
-      <h2>Tags</h2>
+    </Section>
+    <Section title="Tags">
       <TagList />
-    </section>
+    </Section>
   </div>
   <div class="doc-title">
     <h2>{$selectedDoc?.title ?? ""}</h2>
@@ -44,6 +43,9 @@
 
   .tag-pane {
     grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .segment-pane {

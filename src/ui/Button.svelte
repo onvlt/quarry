@@ -1,22 +1,14 @@
-<script lang="ts">
-  export let active: boolean = false;
-</script>
-
-<li><button on:click class:active {...$$props}><slot /></button></li>
+<button on:click {...$$props}><slot /></button>
 
 <style>
-  li {
-    margin: 0 -0.5rem;
-  }
-
   button {
     display: block;
     border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
     padding: 0.25rem 0.5rem;
+    margin: 0 -0.5rem;
     transition: background-color 120ms;
     color: var(--gray-11);
-    width: 100%;
   }
 
   button.active {
@@ -25,7 +17,7 @@
     color: var(--accent-11);
   }
 
-  button:not(.active):hover {
-    background-color: var(--gray-2);
+  button:hover {
+    background-color: var(--accent-3);
   }
 </style>

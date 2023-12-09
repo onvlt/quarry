@@ -1,4 +1,4 @@
-type DocId = number;
+export type DocId = number;
 
 export interface Doc {
   id: DocId;
@@ -7,7 +7,7 @@ export interface Doc {
   segments: Array<Segment>;
 }
 
-type TagId = number;
+export type TagId = number;
 
 export interface Segment {
   span: [start: number, end: number];
