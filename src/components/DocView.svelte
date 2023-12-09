@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Doc } from "../types";
   import Button from "../ui/Button.svelte";
-  import DocAggregator from "./DocAggregator.svelte";
+  import DocContent from "./DocContent.svelte";
   import Editor from "./Editor.svelte";
   import SegmentList from "./SegmentList.svelte";
 
@@ -24,7 +24,7 @@
     {#if editMode}
       <Editor content={doc.content} />
     {:else}
-      <DocAggregator {doc} />
+      <DocContent {doc} />
     {/if}
   </div>
 </div>
