@@ -1,10 +1,41 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { toSpans } from "./helpers";
   import type { Doc } from "./types";
+  import { computePosition, type Coords } from "@floating-ui/dom";
 
   export let doc: Doc;
+  let container: HTMLElement;
+  let toolbar: HTMLElement;
 
-  function toHtml(doc: Doc): string {
+  onMount(() => {
+    document.addEventListener("selectstart", () => {
+      console.log("selectstart");
+      toolbar.style.display = "none";
+    });
+  });
+
+  function handleMouseup(event: MouseEvent) {
+    const selection = document.getSelection();
+    console.log("mouseup");
+    if (
+      selection &&
+      container.contains(selection.anchorNode) &&
+      container.contains(selection.focusNode) &&
+      selection.toString().length > 0
+    ) {
+      const range = selection.getRangeAt(0);
+      computePosition(range, toolbar).then(({ x, y }) => {
+        Object.assign(toolbar.style, {
+          display: "block",
+          left: `${x}px`,
+          top: `${y}px`,
+        });
+      });
+    }
+  }
+
+  function toHtml(xdoc: Doc): string {
     let string = "";
 
     for (let span of toSpans(doc)) {
@@ -25,7 +56,9 @@
   $: html = toHtml(doc);
 </script>
 
-<div class="container">
+<div bind:this={toolbar} class="toolbar">Toolbar</div>
+
+<div bind:this={container} class="container" on:mouseup={handleMouseup}>
   {@html html}
 </div>
 
@@ -33,6 +66,17 @@
   .container {
     white-space: pre-wrap;
     padding: 1rem;
+  }
+
+  .toolbar {
+    background-color: red;
+    width: max-content;
+    position: absolute;
+    display: none;
+    background: var(--gray-2);
+    padding: 0.5rem;
+    border: var(--border);
+    border-radius: var(--radius-md);
   }
 
   :global(.segment) {
