@@ -2,18 +2,24 @@
   import { onMount } from "svelte";
   import { toSpans } from "./helpers";
   import type { Doc } from "./types";
-  import { computePosition, type Coords } from "@floating-ui/dom";
+  import { computePosition } from "@floating-ui/dom";
+  import Toolbar from "./Toolbar.svelte";
 
   export let doc: Doc;
   let container: HTMLElement;
-  let toolbar: HTMLElement;
+  let toolbarContainer: HTMLElement;
+  let toolbar: Toolbar;
 
   onMount(() => {
-    document.addEventListener("selectstart", () => {
-      console.log("selectstart");
-      toolbar.style.display = "none";
-    });
+    document.addEventListener("selectstart", handleSelectStart);
+    return () => {
+      document.removeEventListener("selectstart", handleSelectStart);
+    };
   });
+
+  function handleSelectStart() {
+    toolbarContainer.style.display = "none";
+  }
 
   function handleMouseup(event: MouseEvent) {
     const selection = document.getSelection();
@@ -25,13 +31,14 @@
       selection.toString().length > 0
     ) {
       const range = selection.getRangeAt(0);
-      computePosition(range, toolbar).then(({ x, y }) => {
-        Object.assign(toolbar.style, {
+      computePosition(range, toolbarContainer).then(({ x, y }) => {
+        Object.assign(toolbarContainer.style, {
           display: "block",
           left: `${x}px`,
           top: `${y}px`,
         });
       });
+      toolbar.focus();
     }
   }
 
@@ -56,7 +63,9 @@
   $: html = toHtml(doc);
 </script>
 
-<div bind:this={toolbar} class="toolbar">Toolbar</div>
+<div bind:this={toolbarContainer} class="toolbar">
+  <Toolbar bind:this={toolbar} />
+</div>
 
 <div bind:this={container} class="container" on:mouseup={handleMouseup}>
   {@html html}
