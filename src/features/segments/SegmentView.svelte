@@ -8,7 +8,7 @@
   export let doc: Doc;
   export let segment: Segment;
 
-  const text = doc.content.substring(segment.span[0], segment.span[1]);
+  const text = doc.content.substring(segment.start, segment.end);
 
   function findTag(id: TagId): Tag {
     const tag = $tags.find((tag) => tag.id === id);

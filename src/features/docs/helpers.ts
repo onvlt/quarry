@@ -17,25 +17,24 @@ export function toSpans(doc: Doc): Array<Span> {
 
   for (let index = 0; index < doc.content.length; index++) {
     for (let segment of doc.segments) {
-      const [segmentStart, segmentEnd] = segment.span;
       const segmentIndex = doc.segments.indexOf(segment);
-      if (index === segmentStart) {
+      if (index === segment.start) {
         spans.push({
           start: lastIndex,
-          end: segmentStart,
+          end: segment.start,
           segments: Array.from(currentSegments),
         });
         currentSegments.add(segmentIndex);
-        lastIndex = segmentStart;
+        lastIndex = segment.start;
       }
-      if (index === segmentEnd) {
+      if (index === segment.end) {
         spans.push({
           start: lastIndex,
-          end: segmentEnd,
+          end: segment.end,
           segments: Array.from(currentSegments),
         });
         currentSegments.delete(segmentIndex);
-        lastIndex = segmentEnd;
+        lastIndex = segment.end;
       }
     }
   }
