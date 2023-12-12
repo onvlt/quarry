@@ -47,3 +47,21 @@ export function toSpans(doc: Doc): Array<Span> {
   }
   return spans;
 }
+
+export function toHtml(doc: Doc): string {
+  let string = "";
+
+  for (let span of toSpans(doc)) {
+    const content = doc.content.substring(span.start, span.end);
+    if (span.segments.length > 0) {
+      string += `<span
+        class="segment"
+        data-segments="${JSON.stringify(span.segments)}"
+      >${content}</span>`;
+    } else {
+      string += content;
+    }
+  }
+
+  return string;
+}

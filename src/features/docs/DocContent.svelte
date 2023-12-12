@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { toSpans } from "./helpers";
+  import { toHtml, toSpans } from "./helpers";
   import type { Doc } from "./types";
   import { computePosition } from "@floating-ui/dom";
   import Toolbar from "./Toolbar.svelte";
@@ -40,24 +40,6 @@
       });
       toolbar.focusSearch();
     }
-  }
-
-  function toHtml(xdoc: Doc): string {
-    let string = "";
-
-    for (let span of toSpans(doc)) {
-      const content = doc.content.substring(span.start, span.end);
-      if (span.segments.length > 0) {
-        string += `<span
-          class="segment"
-          data-segments="${JSON.stringify(span.segments)}"
-        >${content}</span>`;
-      } else {
-        string += content;
-      }
-    }
-
-    return string;
   }
 
   $: html = toHtml(doc);
