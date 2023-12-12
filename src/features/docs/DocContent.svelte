@@ -2,6 +2,7 @@
   import { toHtml } from "./helpers";
   import type { Doc } from "./types";
   import { docState } from "../../store";
+  import TaggingModal from "./TaggingModal.svelte";
 
   export let doc: Doc;
   let self: HTMLElement;
@@ -28,12 +29,15 @@
 
 <svelte:window on:keyup={handleKeyUp} />
 
-<div bind:this={self} class="container">
+<TaggingModal />
+
+<div class="doc" bind:this={self}>
   {@html html}
 </div>
 
 <style>
-  .container {
+  .doc {
+    max-width: 600px;
     white-space: pre-wrap;
     padding: 1rem;
   }
