@@ -2,6 +2,7 @@
   import { tags } from "../../store";
   import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
+  import Input from "../../ui/Input.svelte";
 
   let search: string = "";
   let searchInput: HTMLInputElement;
@@ -10,7 +11,7 @@
     tag.name.toLowerCase().includes(search.toLowerCase()),
   );
 
-  export function focus() {
+  export function focusSearch() {
     console.log("focus");
     searchInput.focus();
     searchInput.value = "lool";
@@ -19,7 +20,7 @@
 
 <div>
   <search>
-    <input bind:this={searchInput} type="text" bind:value={search} />
+    <Input bind:inputElement={searchInput} type="text" bind:value={search} />
   </search>
   <NavList>
     {#each results as tag}
@@ -27,3 +28,9 @@
     {/each}
   </NavList>
 </div>
+
+<style>
+  search {
+    margin-bottom: 0.25rem;
+  }
+</style>

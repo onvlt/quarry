@@ -38,7 +38,7 @@
           top: `${y}px`,
         });
       });
-      toolbar.focus();
+      toolbar.focusSearch();
     }
   }
 
