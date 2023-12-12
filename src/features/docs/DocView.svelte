@@ -4,6 +4,7 @@
   import Editor from "./Editor.svelte";
   import SegmentList from "../segments/SegmentList.svelte";
   import type { Doc } from "./types";
+  import Toolbar from "./Toolbar.svelte";
 
   export let doc: Doc;
 
@@ -20,6 +21,7 @@
 </div>
 
 <div class="doc-pane">
+  <Toolbar />
   <div class="doc">
     {#if editMode}
       <Editor content={doc.content} />

@@ -1,11 +1,15 @@
 <script lang="ts">
   export let active: boolean = false;
   export let size: ButtonSize = "md";
+  let class_ = "";
+  export { class_ as class };
 
   type ButtonSize = "sm" | "md" | "lg";
 </script>
 
-<button on:click class:active class="size-{size}" {...$$props}><slot /></button>
+<button on:click class:active class="size-{size} {class_}" {...$$props}
+  ><slot /></button
+>
 
 <style>
   button {

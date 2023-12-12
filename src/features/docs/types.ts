@@ -8,3 +8,9 @@ export interface Doc {
   content: string;
   segments: Array<Segment>;
 }
+
+export type DocMode = "normal" | "tagging";
+
+export interface DocState {
+  mode: DocMode;
+}

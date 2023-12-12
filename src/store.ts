@@ -1,8 +1,12 @@
 import { writable } from "svelte/store";
-import type { Doc } from "./features/docs/types";
+import type { Doc, DocState } from "./features/docs/types";
 import type { Tag } from "./features/tags/types";
 
 export const selectedDoc = writable<Doc | null>(null);
+
+export const docState = writable<DocState>({
+  mode: "normal",
+});
 
 export const tags = writable<Array<Tag>>([
   { id: 0, name: "Decay", color: "red" },

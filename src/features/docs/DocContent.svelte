@@ -1,55 +1,34 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { toHtml, toSpans } from "./helpers";
+  import { toHtml } from "./helpers";
   import type { Doc } from "./types";
-  import { computePosition } from "@floating-ui/dom";
-  import Toolbar from "./Toolbar.svelte";
+  import { docState } from "../../store";
 
   export let doc: Doc;
-  let container: HTMLElement;
-  let toolbarContainer: HTMLElement;
-  let toolbar: Toolbar;
+  let self: HTMLElement;
 
-  onMount(() => {
-    document.addEventListener("selectstart", handleSelectStart);
-    return () => {
-      document.removeEventListener("selectstart", handleSelectStart);
-    };
-  });
+  function handleKeyUp(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      const selection = document.getSelection();
+      if (
+        selection &&
+        self.contains(selection.anchorNode) &&
+        self.contains(selection.focusNode)
+      ) {
+        $docState.mode = "tagging";
+      }
+    }
 
-  function handleSelectStart() {
-    toolbarContainer.style.display = "none";
-  }
-
-  function handleMouseup(event: MouseEvent) {
-    const selection = document.getSelection();
-    console.log("mouseup");
-    if (
-      selection &&
-      container.contains(selection.anchorNode) &&
-      container.contains(selection.focusNode) &&
-      selection.toString().length > 0
-    ) {
-      const range = selection.getRangeAt(0);
-      computePosition(range, toolbarContainer).then(({ x, y }) => {
-        Object.assign(toolbarContainer.style, {
-          display: "block",
-          left: `${x}px`,
-          top: `${y}px`,
-        });
-      });
-      toolbar.focusSearch();
+    if (event.key === "Escape") {
+      $docState.mode = "normal";
     }
   }
 
   $: html = toHtml(doc);
 </script>
 
-<div bind:this={toolbarContainer} class="toolbar">
-  <Toolbar bind:this={toolbar} />
-</div>
+<svelte:window on:keyup={handleKeyUp} />
 
-<div bind:this={container} class="container" on:mouseup={handleMouseup}>
+<div bind:this={self} class="container">
   {@html html}
 </div>
 
@@ -57,17 +36,6 @@
   .container {
     white-space: pre-wrap;
     padding: 1rem;
-  }
-
-  .toolbar {
-    background-color: red;
-    width: max-content;
-    position: absolute;
-    display: none;
-    background: var(--gray-2);
-    padding: 0.5rem;
-    border: var(--border);
-    border-radius: var(--radius-md);
   }
 
   :global(.segment) {

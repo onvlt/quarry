@@ -1,36 +1,34 @@
 <script lang="ts">
-  import { tags } from "../../store";
-  import NavItem from "../../ui/NavItem.svelte";
-  import NavList from "../../ui/NavList.svelte";
-  import Input from "../../ui/Input.svelte";
+  import { docState } from "../../store";
+  import Button from "../../ui/Button.svelte";
 
-  let search: string = "";
-  let searchInput: HTMLInputElement;
+  $: console.log($docState);
 
-  $: results = $tags.filter((tag) =>
-    tag.name.toLowerCase().includes(search.toLowerCase()),
-  );
-
-  export function focusSearch() {
-    console.log("focus");
-    searchInput.focus();
-    searchInput.value = "lool";
+  function handleClose() {
+    $docState.mode = "normal";
   }
 </script>
 
-<div>
-  <search>
-    <Input bind:inputElement={searchInput} type="text" bind:value={search} />
-  </search>
-  <NavList>
-    {#each results as tag}
-      <NavItem>{tag.name}</NavItem>
-    {/each}
-  </NavList>
-</div>
+{#if $docState.mode === "tagging"}
+  <div class="toolbar">
+    <div>Tagging</div>
+    <div class="close">
+      <Button on:click={handleClose}>&times;</Button>
+    </div>
+  </div>
+{/if}
 
 <style>
-  search {
-    margin-bottom: 0.25rem;
+  .toolbar {
+    padding: 0.5rem 1rem;
+    border-bottom: var(--border);
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .close {
+    margin-left: auto;
   }
 </style>
