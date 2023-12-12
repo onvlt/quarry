@@ -1,7 +1,7 @@
 <script lang="ts">
-  import DocList from "../components/DocList.svelte";
-  import TagList from "../components/TagList.svelte";
-  import Section from "../ui/Section.svelte";
+  import DocList from "../features/docs/DocList.svelte";
+  import TagList from "../features/tags/TagList.svelte";
+  import Section from "./Section.svelte";
 </script>
 
 <div class="sidebar">

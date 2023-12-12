@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Doc } from "../types";
-  import Button from "../ui/Button.svelte";
+  import Button from "../../ui/Button.svelte";
   import DocContent from "./DocContent.svelte";
   import Editor from "./Editor.svelte";
-  import SegmentList from "./SegmentList.svelte";
+  import SegmentList from "../segments/SegmentList.svelte";
+  import type { Doc } from "./types";
 
   export let doc: Doc;
 

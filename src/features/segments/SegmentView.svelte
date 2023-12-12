@@ -1,7 +1,10 @@
 <script lang="ts">
-  import { tags } from "../store";
-  import type { Doc, Segment, Tag, TagId } from "../types";
-  import TagBadge from "./TagBadge.svelte";
+  import { tags } from "../../store";
+  import TagBadge from "../tags/TagBadge.svelte";
+  import type { Doc } from "../docs/types";
+  import type { Tag, TagId } from "../tags/types";
+  import type { Segment } from "./types";
+
   export let doc: Doc;
   export let segment: Segment;
 

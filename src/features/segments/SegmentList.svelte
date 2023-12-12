@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Doc } from "../types";
-  import NavItem from "../ui/NavItem.svelte";
-  import NavList from "../ui/NavList.svelte";
+  import NavItem from "../../ui/NavItem.svelte";
+  import NavList from "../../ui/NavList.svelte";
   import SegmentView from "./SegmentView.svelte";
+  import type { Doc } from "../docs/types";
 
   export let doc: Doc;
 </script>

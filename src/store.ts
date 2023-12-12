@@ -1,5 +1,6 @@
-import { readable, writable } from "svelte/store";
-import type { Doc, Tag } from "./types";
+import { writable } from "svelte/store";
+import type { Doc } from "./features/docs/types";
+import type { Tag } from "./features/tags/types";
 
 export const selectedDoc = writable<Doc | null>(null);
 

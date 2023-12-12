@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Doc } from "../types";
+  import type { Doc } from "./types";
 
   export let doc: Doc;
 

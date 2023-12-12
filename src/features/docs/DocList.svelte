@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { docs, selectedDoc } from "../store";
-  import type { Doc } from "../types";
-  import NavItem from "../ui/NavItem.svelte";
-  import NavList from "../ui/NavList.svelte";
+  import { docs, selectedDoc } from "../../store";
+  import NavItem from "../../ui/NavItem.svelte";
+  import NavList from "../../ui/NavList.svelte";
+  import type { Doc } from "./types";
 
   function onClick(event: Event, doc: Doc) {
     event.preventDefault();

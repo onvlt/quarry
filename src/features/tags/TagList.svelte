@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { tags } from "../store";
-  import NavItem from "../ui/NavItem.svelte";
-  import NavList from "../ui/NavList.svelte";
+  import { tags } from "../../store";
+  import NavItem from "../../ui/NavItem.svelte";
+  import NavList from "../../ui/NavList.svelte";
 </script>
 
 <NavList>
