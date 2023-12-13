@@ -7,6 +7,7 @@
   import type { Tag } from "./types";
   import TagListItem from "./TagListItem.svelte";
   import Input from "../../ui/Input.svelte";
+  import { fade, fly, scale } from "svelte/transition";
 
   let searchInput: HTMLInputElement | undefined;
   let tagSearch = "";
@@ -39,7 +40,7 @@
   );
 </script>
 
-<div class="container">
+<div class="container" transition:fade={{ duration: 120 }}>
   <div class="toolbar">
     <div class="input-wrapper">
       <Input
