@@ -29,14 +29,14 @@
     background-color: var(--gray-5);
   }
 
+  .active {
+    background-color: var(--accent-3);
+    color: var(--accent-11);
+  }
+
   .selected {
     background-color: var(--accent-secondary-10);
     color: black;
     z-index: 2;
-  }
-
-  .active {
-    background-color: var(--accent-3);
-    color: var(--accent-11);
   }
 </style>

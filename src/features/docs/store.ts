@@ -18,6 +18,7 @@ export function toSelectionMode(
   return {
     ...docState,
     mode: "selection",
+    selectedSegment: null,
     selectedRange,
   };
 }
