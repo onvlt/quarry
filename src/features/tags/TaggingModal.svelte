@@ -31,10 +31,10 @@
       );
 
       if (existingSegment) {
-        existingSegment.tags.push(tag.id);
+        existingSegment.tags.push(tag);
       } else {
         $selectedDoc.segments.push(
-          createSegment($selectedDoc, $docState.selectedRange, [tag.id]),
+          createSegment($selectedDoc, $docState.selectedRange, [tag]),
         );
       }
       $selectedDoc.segments = $selectedDoc.segments;

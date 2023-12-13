@@ -9,22 +9,14 @@
   export let segment: Segment;
 
   const text = doc.content.substring(...segment.range);
-
-  function findTag(id: TagId): Tag {
-    const tag = $tags.find((tag) => tag.id === id);
-    if (!tag) {
-      throw Error("Tag not found");
-    }
-    return tag;
-  }
 </script>
 
 <li>
   <p class="content">{text}</p>
   <ul class="tag-list">
-    {#each segment.tags as tagId}
+    {#each segment.tags as tag}
       <li>
-        <TagBadge tag={findTag(tagId)} />
+        <TagBadge {tag} />
       </li>
     {/each}
   </ul>
