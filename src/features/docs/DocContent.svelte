@@ -5,6 +5,7 @@
   import TaggingModal from "../tags/TaggingModal.svelte";
   import InlineTaggingModal from "../tags/InlineTaggingModal.svelte";
   import type { TextRange } from "../segments/types";
+  import DocSpan from "./DocSpan.svelte";
 
   export let doc: Doc;
   let self: HTMLElement;
@@ -77,12 +78,7 @@
   role="textbox"
   tabindex="0"
 >
-  {#each flattenedSpans as span}<span
-      data-start={span.range[0]}
-      class:segment={span.segments.length > 0}
-      class:selected={span.selected === "mid" || span.selected === "last"}
-      >{span.content}</span
-    >{#if span.selected === "last"}<InlineTaggingModal />{/if}{/each}
+  {#each flattenedSpans as span}<DocSpan {span} />{/each}
 </div>
 
 <style>
@@ -90,16 +86,5 @@
     max-width: 600px;
     white-space: pre-wrap;
     padding: 1rem;
-  }
-
-  .segment {
-    background-color: var(--gray-9);
-  }
-
-  .selected {
-    background-color: var(--accent-secondary-10);
-    outline: 0.125rem solid var(--accent-secondary-10);
-    border-radius: var(--radius-xs);
-    color: black;
   }
 </style>

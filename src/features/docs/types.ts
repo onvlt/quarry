@@ -15,3 +15,10 @@ export interface DocState {
   mode: DocMode;
   selectedRange: TextRange | null;
 }
+
+export interface FlattenedSpan {
+  range: TextRange;
+  content: string;
+  segments: Array<number>;
+  selected: "mid" | "last" | "none";
+}

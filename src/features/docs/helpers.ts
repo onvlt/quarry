@@ -1,12 +1,5 @@
-import type { Doc, DocState } from "./types";
+import type { Doc, DocState, FlattenedSpan } from "./types";
 import type { TextRange } from "../segments/types";
-
-interface FlattenedSpan {
-  range: TextRange;
-  content: string;
-  segments: Array<number>;
-  selected: "mid" | "last" | "none";
-}
 
 function createFlattenedSpan(
   doc: Doc,
