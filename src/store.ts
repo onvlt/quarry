@@ -6,6 +6,7 @@ export const selectedDoc = writable<Doc | null>(null);
 
 export const docState = writable<DocState>({
   mode: "normal",
+  selectedRange: null,
 });
 
 export const tags = writable<Array<Tag>>([
@@ -28,9 +29,9 @@ Na křižovatce bubenska/strojnicka/zeleznicaru se skoro nedá přecházet, stav
 Kolem mě jde parta dětí a smějí se se ceduli „chodník zde končí, přejděte na druhou stranu“ — na druhé straně žádný chodník není, je tam zátarasa s nápisem metrostav.
 `,
     segments: [
-      { start: 0, end: 40, tags: [0] },
-      { start: 30, end: 50, tags: [0, 1] },
-      { start: 80, end: 100, tags: [1] },
+      { range: [0, 40], tags: [0] },
+      { range: [30, 50], tags: [0, 1] },
+      { range: [80, 100], tags: [1] },
     ],
   },
   {
@@ -47,9 +48,9 @@ Na křižovatce bubenska/strojnicka/zeleznicaru se skoro nedá přecházet, stav
 Kolem mě jde parta dětí a smějí se se ceduli „chodník zde končí, přejděte na druhou stranu“ — na druhé straně žádný chodník není, je tam zátarasa s nápisem metrostav.
 `,
     segments: [
-      { start: 0, end: 40, tags: [0] },
-      { start: 30, end: 50, tags: [0, 1] },
-      { start: 500, end: 800, tags: [1] },
+      { range: [0, 40], tags: [0] },
+      { range: [30, 50], tags: [0, 1] },
+      { range: [500, 800], tags: [1] },
     ],
   },
 ]);

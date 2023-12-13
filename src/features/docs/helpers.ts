@@ -1,8 +1,8 @@
 import type { Doc } from "./types";
+import type { TextRange } from "../segments/types";
 
 interface Span {
-  start: number;
-  end: number;
+  range: TextRange;
   segments: Array<number>;
 }
 
@@ -17,31 +17,29 @@ export function toSpans(doc: Doc): Array<Span> {
 
   for (let index = 0; index < doc.content.length; index++) {
     for (let segment of doc.segments) {
-      const segmentIndex = doc.segments.indexOf(segment);
-      if (index === segment.start) {
+      const [start, end] = segment.range;
+      const segmentId = doc.segments.indexOf(segment);
+      if (index === start) {
         spans.push({
-          start: lastIndex,
-          end: segment.start,
+          range: [lastIndex, start],
           segments: Array.from(currentSegments),
         });
-        currentSegments.add(segmentIndex);
-        lastIndex = segment.start;
+        currentSegments.add(segmentId);
+        lastIndex = start;
       }
-      if (index === segment.end) {
+      if (index === end) {
         spans.push({
-          start: lastIndex,
-          end: segment.end,
+          range: [lastIndex, end],
           segments: Array.from(currentSegments),
         });
-        currentSegments.delete(segmentIndex);
-        lastIndex = segment.end;
+        currentSegments.delete(segmentId);
+        lastIndex = end;
       }
     }
   }
   if (lastIndex !== doc.content.length - 1) {
     spans.push({
-      start: lastIndex,
-      end: doc.content.length - 1,
+      range: [lastIndex, doc.content.length - 1],
       segments: [],
     });
   }
@@ -52,7 +50,7 @@ export function toHtml(doc: Doc): string {
   let string = "";
 
   for (let span of toSpans(doc)) {
-    const content = doc.content.substring(span.start, span.end);
+    const content = doc.content.substring(...span.range);
     if (span.segments.length > 0) {
       string += `<span
         class="segment"

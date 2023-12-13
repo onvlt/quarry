@@ -16,6 +16,10 @@
         self.contains(selection.focusNode)
       ) {
         $docState.mode = "tagging";
+        $docState.selectedRange = [
+          selection.anchorOffset,
+          selection.focusOffset,
+        ];
       }
     }
 

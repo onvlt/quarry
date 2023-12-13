@@ -1,4 +1,4 @@
-import type { Segment } from "../segments/types";
+import type { Segment, TextRange } from "../segments/types";
 
 export type DocId = number;
 
@@ -13,4 +13,5 @@ export type DocMode = "normal" | "tagging";
 
 export interface DocState {
   mode: DocMode;
+  selectedRange: TextRange | null;
 }
