@@ -1,22 +1,30 @@
 <script lang="ts">
   import { docState } from "../../store";
   import Button from "../../ui/Button.svelte";
+  import Input from "../../ui/Input.svelte";
 
-  $: console.log($docState);
+  let searchInput: HTMLInputElement;
+  let tagSearch = "";
+
+  $: {
+    if ($docState.mode === "tagging") {
+      searchInput.focus();
+    }
+  }
 
   function handleClose() {
     $docState.mode = "normal";
   }
 </script>
 
-{#if $docState.mode === "tagging"}
-  <div class="toolbar">
-    <div>Tagging</div>
-    <div class="close">
-      <Button on:click={handleClose}>&times;</Button>
-    </div>
+<div class="toolbar">
+  <div>
+    <Input type="text" bind:inputElement={searchInput} bind:value={tagSearch} />
   </div>
-{/if}
+  <div class="close">
+    <Button on:click={handleClose}>&times;</Button>
+  </div>
+</div>
 
 <style>
   .toolbar {
