@@ -1,9 +1,10 @@
 <script lang="ts">
   import { toFlattenedSpans } from "./helpers";
   import type { Doc } from "./types";
-  import { docState } from "./store";
+  import { docState, toNormalMode, toSelectionMode } from "./store";
   import TaggingModal from "../tags/TaggingModal.svelte";
   import InlineTaggingModal from "../tags/InlineTaggingModal.svelte";
+  import type { TextRange } from "../segments/types";
 
   export let doc: Doc;
   let self: HTMLElement;
@@ -29,16 +30,18 @@
             selection.focusNode.parentElement.dataset.start,
           );
 
-          $docState.selectedRange = [
+          const selectionRange: TextRange = [
             selection.anchorOffset + anchorSpanOffset,
             selection.focusOffset + focusSpanOffset,
           ];
+
+          $docState = toSelectionMode($docState, selectionRange);
         }
       }
     }
 
     if (event.key === "Escape") {
-      $docState.mode = "normal";
+      $docState = toNormalMode($docState);
     }
   }
 
@@ -48,7 +51,9 @@
 
 <svelte:window on:keyup={handleKeyUp} />
 
-<TaggingModal />
+{#if $docState.mode === "selection"}
+  <TaggingModal />
+{/if}
 
 <div class="doc" bind:this={self}>
   {#each flattenedSpans as span}<span

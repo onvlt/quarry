@@ -8,11 +8,11 @@
   import TagListItem from "./TagListItem.svelte";
   import Input from "../../ui/Input.svelte";
 
-  let searchInput: HTMLInputElement;
+  let searchInput: HTMLInputElement | undefined;
   let tagSearch = "";
 
   $: {
-    if ($docState.mode === "selection") {
+    if ($docState.mode === "selection" && searchInput) {
       searchInput.focus();
     }
   }
@@ -63,6 +63,9 @@
   .container {
     padding: 0.5rem 1rem;
     border-bottom: var(--border);
+    position: sticky;
+    top: 0;
+    background-color: var(--gray-1);
   }
 
   .input-wrapper {

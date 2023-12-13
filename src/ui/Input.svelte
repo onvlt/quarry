@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let inputElement: HTMLInputElement;
+  export let inputElement: HTMLInputElement | undefined;
   export let value: string;
 </script>
 

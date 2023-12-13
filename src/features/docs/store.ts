@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import type { Doc, DocState } from "./types";
+import type { TextRange } from "../segments/types";
 
 export const selectedDoc = writable<Doc | null>(null);
 
@@ -7,6 +8,25 @@ export const docState = writable<DocState>({
   mode: "normal",
   selectedRange: null,
 });
+
+export function toSelectionMode(
+  docState: DocState,
+  selectedRange: TextRange
+): DocState {
+  return {
+    ...docState,
+    mode: "selection",
+    selectedRange,
+  };
+}
+
+export function toNormalMode(docState: DocState): DocState {
+  return {
+    ...docState,
+    mode: "normal",
+    selectedRange: null,
+  };
+}
 
 export const docs = writable<Array<Doc>>([
   {
