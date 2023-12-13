@@ -3,7 +3,6 @@
   import type { Doc } from "./types";
   import { docState, toNormalMode, toSelectionMode } from "./store";
   import TaggingModal from "../tags/TaggingModal.svelte";
-  import InlineTaggingModal from "../tags/InlineTaggingModal.svelte";
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
 
@@ -31,7 +30,7 @@
         const selectionRange: TextRange = [
           selection.anchorOffset + anchorSpanOffset,
           selection.focusOffset + focusSpanOffset,
-        ];
+        ].sort((a, b) => a - b) as TextRange;
 
         return selectionRange;
       }

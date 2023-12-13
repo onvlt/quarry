@@ -13,16 +13,19 @@
 >{#if span.selected === "last"}<InlineTaggingModal />{/if}
 
 <style>
+  span {
+    box-decoration-break: clone;
+    padding: 0.15em 0;
+    border-radius: 2px;
+  }
+
   .segment {
-    background-color: var(--gray-4);
-    outline: 0.125rem solid var(--gray-4);
-    border-radius: var(--radius-xs);
+    background-color: var(--gray-5);
   }
 
   .selected {
     background-color: var(--accent-secondary-10);
-    outline: 0.125rem solid var(--accent-secondary-10);
-    border-radius: var(--radius-xs);
     color: black;
+    z-index: 2;
   }
 </style>
