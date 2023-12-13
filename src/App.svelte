@@ -4,7 +4,7 @@
   import { selectedDoc } from "./features/docs/store";
 </script>
 
-<main class="container">
+<main>
   <Sidebar />
   {#if $selectedDoc}
     <DocView doc={$selectedDoc} />
@@ -12,11 +12,11 @@
 </main>
 
 <style>
-  .container {
+  main {
     display: grid;
     grid-template-columns: 1fr 3fr 2fr;
-    height: 100%;
     grid-template-areas: "sidebar title title" "sidebar doc segments";
     grid-template-rows: 3rem 1fr;
+    height: 100vh;
   }
 </style>

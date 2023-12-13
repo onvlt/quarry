@@ -22,5 +22,6 @@
     gap: 1.5rem;
     border-right: var(--border);
     padding: 1rem;
+    overflow-y: auto;
   }
 </style>

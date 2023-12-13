@@ -37,11 +37,13 @@
 
   .doc-pane {
     grid-area: doc;
+    overflow-y: auto;
   }
 
   .segment-pane {
     grid-area: segments;
     border-left: var(--border);
     padding: 1rem;
+    overflow-y: auto;
   }
 </style>
