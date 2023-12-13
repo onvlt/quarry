@@ -9,39 +9,54 @@
   export let doc: Doc;
   let self: HTMLElement;
 
+  function getValidSelection(): TextRange | null {
+    const selection = document.getSelection();
+    if (
+      selection &&
+      self.contains(selection.anchorNode) &&
+      self.contains(selection.focusNode)
+    ) {
+      if (
+        selection.anchorNode?.parentElement instanceof HTMLSpanElement &&
+        selection.focusNode?.parentElement instanceof HTMLSpanElement
+      ) {
+        const anchorSpanOffset = Number(
+          selection.anchorNode.parentElement.dataset.start,
+        );
+        const focusSpanOffset = Number(
+          selection.focusNode.parentElement.dataset.start,
+        );
+
+        const selectionRange: TextRange = [
+          selection.anchorOffset + anchorSpanOffset,
+          selection.focusOffset + focusSpanOffset,
+        ];
+
+        return selectionRange;
+      }
+    }
+    return null;
+  }
+
   function handleKeyUp(event: KeyboardEvent) {
     if (event.key === "Enter") {
-      const selection = document.getSelection();
-      if (
-        selection &&
-        self.contains(selection.anchorNode) &&
-        self.contains(selection.focusNode)
-      ) {
-        $docState.mode = "selection";
-
-        if (
-          selection.anchorNode?.parentElement instanceof HTMLSpanElement &&
-          selection.focusNode?.parentElement instanceof HTMLSpanElement
-        ) {
-          const anchorSpanOffset = Number(
-            selection.anchorNode.parentElement.dataset.start,
-          );
-          const focusSpanOffset = Number(
-            selection.focusNode.parentElement.dataset.start,
-          );
-
-          const selectionRange: TextRange = [
-            selection.anchorOffset + anchorSpanOffset,
-            selection.focusOffset + focusSpanOffset,
-          ];
-
-          $docState = toSelectionMode($docState, selectionRange);
-        }
+      const selectionRange = getValidSelection();
+      if (selectionRange) {
+        $docState = toSelectionMode($docState, selectionRange);
       }
     }
 
     if (event.key === "Escape") {
       $docState = toNormalMode($docState);
+    }
+  }
+
+  function handleMouseUp() {
+    if ($docState.mode === "selection") {
+      const selectionRange = getValidSelection();
+      if (selectionRange) {
+        $docState = toSelectionMode($docState, selectionRange);
+      }
     }
   }
 
@@ -55,7 +70,13 @@
   <TaggingModal />
 {/if}
 
-<div class="doc" bind:this={self}>
+<div
+  class="doc"
+  bind:this={self}
+  on:mouseup={handleMouseUp}
+  role="textbox"
+  tabindex="0"
+>
   {#each flattenedSpans as span}<span
       data-start={span.range[0]}
       class:segment={span.segments.length > 0}
