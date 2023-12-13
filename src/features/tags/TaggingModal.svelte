@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { docState, selectedDoc } from "../docs/store";
+  import { docState, selectedDoc, toNormalMode } from "../docs/store";
   import { tags } from "./store";
   import Button from "../../ui/Button.svelte";
   import NavList from "../../ui/NavList.svelte";
@@ -31,7 +31,7 @@
   }
 
   function handleClose() {
-    $docState.mode = "normal";
+    $docState = toNormalMode($docState);
   }
 
   $: filteredTags = $tags.filter((tag) =>
