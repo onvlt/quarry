@@ -9,7 +9,7 @@ export interface Doc {
   segments: Array<Segment>;
 }
 
-export type DocMode = "normal" | "tagging";
+export type DocMode = "normal" | "selection";
 
 export interface DocState {
   mode: DocMode;

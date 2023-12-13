@@ -12,7 +12,7 @@
   let tagSearch = "";
 
   $: {
-    if ($docState.mode === "tagging") {
+    if ($docState.mode === "selection") {
       searchInput.focus();
     }
   }
@@ -20,7 +20,7 @@
   function assignTag(tag: Tag) {
     if (
       $selectedDoc &&
-      $docState.mode === "tagging" &&
+      $docState.mode === "selection" &&
       $docState.selectedRange
     ) {
       $selectedDoc.segments = [
