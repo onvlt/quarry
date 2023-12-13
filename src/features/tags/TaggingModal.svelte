@@ -24,10 +24,20 @@
       $docState.mode === "selection" &&
       $docState.selectedRange
     ) {
-      $selectedDoc.segments = [
-        ...$selectedDoc.segments,
-        createSegment($selectedDoc, $docState.selectedRange, [tag.id]),
-      ];
+      const existingSegment = $selectedDoc.segments.find((segment) =>
+        [0, 1].every(
+          (index) => segment.range[index] === $docState.selectedRange![index],
+        ),
+      );
+
+      if (existingSegment) {
+        existingSegment.tags.push(tag.id);
+      } else {
+        $selectedDoc.segments.push(
+          createSegment($selectedDoc, $docState.selectedRange, [tag.id]),
+        );
+      }
+      $selectedDoc.segments = $selectedDoc.segments;
     }
   }
 
