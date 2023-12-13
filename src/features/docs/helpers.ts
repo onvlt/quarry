@@ -5,7 +5,7 @@ interface FlattenedSpan {
   range: TextRange;
   content: string;
   segments: Array<number>;
-  selected: boolean;
+  selected: "mid" | "last" | "none";
 }
 
 function createFlattenedSpan(
@@ -13,8 +13,8 @@ function createFlattenedSpan(
   range: TextRange,
   {
     segments = [],
-    selected = false,
-  }: { segments?: Array<number>; selected?: boolean } = {}
+    selected = "none",
+  }: { segments?: Array<number>; selected?: "mid" | "last" | "none" } = {}
 ) {
   return {
     range,
@@ -86,7 +86,11 @@ export function toFlattenedSpans(
       spans.push(
         createFlattenedSpan(doc, [lastIndex, index], {
           segments: Array.from(currentState.segments),
-          selected: currentState.selected,
+          selected: currentState.selected
+            ? nextState.selected
+              ? "mid"
+              : "last"
+            : "none",
         })
       );
       currentState = nextState;
