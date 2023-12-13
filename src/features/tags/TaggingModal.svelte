@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { docState, selectedDoc } from "./store";
-  import { tags } from "../tags/store";
+  import { docState, selectedDoc } from "../docs/store";
+  import { tags } from "./store";
   import Button from "../../ui/Button.svelte";
   import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
   import { createSegment } from "../segments/helpers";
-  import type { Tag } from "../tags/types";
+  import type { Tag } from "./types";
 
   let searchInput: HTMLInputElement;
   let tagSearch = "";

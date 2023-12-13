@@ -2,8 +2,8 @@
   import { toFlattenedSpans } from "./helpers";
   import type { Doc } from "./types";
   import { docState } from "./store";
-  import TaggingModal from "./TaggingModal.svelte";
-  import InlineTaggingModal from "./InlineTaggingModal.svelte";
+  import TaggingModal from "../tags/TaggingModal.svelte";
+  import InlineTaggingModal from "../tags/InlineTaggingModal.svelte";
 
   export let doc: Doc;
   let self: HTMLElement;
