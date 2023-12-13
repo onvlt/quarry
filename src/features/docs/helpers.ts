@@ -1,64 +1,105 @@
-import type { Doc } from "./types";
+import type { Doc, DocState } from "./types";
 import type { TextRange } from "../segments/types";
 
-interface Span {
+interface FlattenedSpan {
   range: TextRange;
   segments: Array<number>;
+  selected: boolean;
 }
 
 /**
  * Convert array of possibly overlapping segments into array of non-overlapping
  * "spans", which can be easily expressed as HTML spans.
  */
-export function toSpans(doc: Doc): Array<Span> {
-  let spans: Array<Span> = [];
+export function toFlattenedSpans(
+  doc: Doc,
+  state: DocState
+): Array<FlattenedSpan> {
+  type LoopState = {
+    selected: boolean;
+    segments: Set<number>;
+  };
+  let spans: Array<FlattenedSpan> = [];
   let lastIndex = 0;
-  const currentSegments = new Set<number>();
+  let currentState: LoopState = {
+    selected: false,
+    segments: new Set(),
+  };
 
   for (let index = 0; index < doc.content.length; index++) {
+    let nextState: LoopState | null = null;
+
+    if (state.selectedRange) {
+      const [selectionStart, selectionEnd] = state.selectedRange;
+      if (index === selectionStart) {
+        nextState = {
+          ...currentState,
+          selected: true,
+        };
+      }
+      if (index === selectionEnd) {
+        nextState = {
+          ...currentState,
+          selected: false,
+        };
+      }
+    }
+
     for (let segment of doc.segments) {
-      const [start, end] = segment.range;
-      const segmentId = doc.segments.indexOf(segment);
-      if (index === start) {
-        spans.push({
-          range: [lastIndex, start],
-          segments: Array.from(currentSegments),
-        });
-        currentSegments.add(segmentId);
-        lastIndex = start;
+      const [segmentStart, segmentEnd] = segment.range;
+      if (index === segmentStart) {
+        const segments = new Set(currentState.segments);
+        segments.add(segment.id);
+        nextState = {
+          ...currentState,
+          segments,
+        };
       }
-      if (index === end) {
-        spans.push({
-          range: [lastIndex, end],
-          segments: Array.from(currentSegments),
-        });
-        currentSegments.delete(segmentId);
-        lastIndex = end;
+      if (index === segmentEnd) {
+        const segments = new Set(currentState.segments);
+        segments.delete(segment.id);
+        nextState = {
+          ...currentState,
+          segments,
+        };
       }
+    }
+
+    if (nextState) {
+      console.log(lastIndex);
+      spans.push({
+        range: [lastIndex, index],
+        segments: Array.from(currentState.segments),
+        selected: currentState.selected,
+      });
+      currentState = nextState;
+      lastIndex = index;
     }
   }
   if (lastIndex !== doc.content.length - 1) {
     spans.push({
       range: [lastIndex, doc.content.length - 1],
       segments: [],
+      selected: false,
     });
   }
+
+  console.log(spans);
   return spans;
 }
 
-export function toHtml(doc: Doc): string {
+export function toHtml(doc: Doc, state: DocState): string {
   let string = "";
 
-  for (let span of toSpans(doc)) {
+  for (let span of toFlattenedSpans(doc, state)) {
     const content = doc.content.substring(...span.range);
-    if (span.segments.length > 0) {
-      string += `<span
-        class="segment"
-        data-segments="${JSON.stringify(span.segments)}"
-      >${content}</span>`;
-    } else {
-      string += content;
-    }
+    const classes = [
+      span.segments.length > 0 ? "segment" : undefined,
+      span.selected ? "selected" : undefined,
+    ]
+      .filter((x) => x)
+      .join(" ");
+    string += `<span class="${classes}">${content}</span>`;
   }
 
   return string;

@@ -28,7 +28,8 @@
     }
   }
 
-  $: html = toHtml(doc);
+  $: html = toHtml(doc, $docState);
+  $: console.log($docState.selectedRange);
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
@@ -48,5 +49,9 @@
 
   :global(.segment) {
     background-color: var(--gray-6);
+  }
+  :global(.selected) {
+    background-color: yellow;
+    color: black;
   }
 </style>

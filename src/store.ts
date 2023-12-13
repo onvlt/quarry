@@ -29,9 +29,9 @@ Na křižovatce bubenska/strojnicka/zeleznicaru se skoro nedá přecházet, stav
 Kolem mě jde parta dětí a smějí se se ceduli „chodník zde končí, přejděte na druhou stranu“ — na druhé straně žádný chodník není, je tam zátarasa s nápisem metrostav.
 `,
     segments: [
-      { range: [0, 40], tags: [0] },
-      { range: [30, 50], tags: [0, 1] },
-      { range: [80, 100], tags: [1] },
+      { id: 0, range: [0, 40], tags: [0] },
+      { id: 1, range: [30, 50], tags: [0, 1] },
+      { id: 2, range: [80, 100], tags: [1] },
     ],
   },
   {
@@ -48,9 +48,9 @@ Na křižovatce bubenska/strojnicka/zeleznicaru se skoro nedá přecházet, stav
 Kolem mě jde parta dětí a smějí se se ceduli „chodník zde končí, přejděte na druhou stranu“ — na druhé straně žádný chodník není, je tam zátarasa s nápisem metrostav.
 `,
     segments: [
-      { range: [0, 40], tags: [0] },
-      { range: [30, 50], tags: [0, 1] },
-      { range: [500, 800], tags: [1] },
+      { id: 0, range: [0, 40], tags: [0] },
+      { id: 1, range: [30, 50], tags: [0, 1] },
+      { id: 2, range: [500, 800], tags: [1] },
     ],
   },
 ]);
