@@ -8,6 +8,7 @@ export const selectedDoc = writable<Doc | null>(null);
 export const docState = writable<DocState>({
   mode: "normal",
   selectedRange: null,
+  selectedSegment: null,
 });
 
 export function toSelectionMode(

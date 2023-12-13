@@ -14,6 +14,7 @@ export type DocMode = "normal" | "selection";
 export interface DocState {
   mode: DocMode;
   selectedRange: TextRange | null;
+  selectedSegment: Segment | null;
 }
 
 export interface FlattenedSpan {

@@ -11,16 +11,14 @@
   const text = doc.content.substring(...segment.range);
 </script>
 
-<li>
-  <p class="content">{text}</p>
-  <ul class="tag-list">
-    {#each segment.tags as tag}
-      <li>
-        <TagBadge {tag} />
-      </li>
-    {/each}
-  </ul>
-</li>
+<p class="content">{text}</p>
+<ul class="tag-list">
+  {#each segment.tags as tag}
+    <li>
+      <TagBadge {tag} />
+    </li>
+  {/each}
+</ul>
 
 <style>
   .content {
