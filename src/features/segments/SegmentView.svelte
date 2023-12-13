@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tags } from "../../store";
+  import { tags } from "../tags/store";
   import TagBadge from "../tags/TagBadge.svelte";
   import type { Doc } from "../docs/types";
   import type { Tag, TagId } from "../tags/types";

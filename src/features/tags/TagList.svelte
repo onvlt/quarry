@@ -1,26 +1,13 @@
 <script lang="ts">
-  import { tags } from "../../store";
-  import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
+  import TagListItem from "./TagListItem.svelte";
+  import type { Tag } from "./types";
+
+  export let tags: Array<Tag>;
 </script>
 
 <NavList>
-  {#each $tags as tag}
-    <NavItem>
-      <span class="tag-content">
-        <svg viewBox="0 0 2 2" width="12">
-          <circle cx="1" cy="1" r="1" fill={tag.color} />
-        </svg>
-        {tag.name}
-      </span>
-    </NavItem>
+  {#each tags as tag}
+    <TagListItem {tag} />
   {/each}
 </NavList>
-
-<style>
-  .tag-content {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-</style>

@@ -1,6 +1,6 @@
-<span class="wrapper">
+<!-- <span class="wrapper">
   <div class="tagging-modal">Tagging modal</div>
-</span>
+</span> -->
 
 <style>
   .wrapper {

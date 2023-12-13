@@ -1,6 +1,7 @@
 <script lang="ts">
   import DocList from "../features/docs/DocList.svelte";
   import TagList from "../features/tags/TagList.svelte";
+  import { tags } from "../features/tags/store";
   import Section from "./Section.svelte";
 </script>
 
@@ -9,7 +10,7 @@
     <DocList />
   </Section>
   <Section title="Tags">
-    <TagList />
+    <TagList tags={$tags} />
   </Section>
 </div>
 
