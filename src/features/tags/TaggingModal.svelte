@@ -24,33 +24,42 @@
       $docState.mode === "selection" &&
       $docState.selectedRange
     ) {
-      const existingSegment = $selectedDoc.segments.find((segment) =>
+      let segments = $selectedDoc.segments;
+
+      // Find out if there is some existing segment with exact same range
+      // so we can reuse it without creating new segment
+      const existingSegment = segments.find((segment) =>
         [0, 1].every(
           (index) => segment.range[index] === $docState.selectedRange![index],
         ),
       );
 
       if (existingSegment) {
+        // If existing segment has this tag, remove it
         if (existingSegment.tags.includes(tag)) {
           existingSegment.tags = existingSegment.tags.filter(
             (otherTag) => otherTag !== tag,
           );
 
+          // If there are no ramining tags in segment, remove the segment
           if (existingSegment.tags.length === 0) {
-            $selectedDoc.segments = $selectedDoc.segments.filter(
+            segments = segments.filter(
               (segment) => segment !== existingSegment,
             );
           }
         } else {
+          // Add tag to existing segment
           existingSegment.tags.push(tag);
         }
       } else {
-        $selectedDoc.segments.push(
+        // Create new segment
+        segments.push(
           createSegment($selectedDoc, $docState.selectedRange, [tag]),
         );
       }
 
-      $selectedDoc.segments = $selectedDoc.segments;
+      // Assign to trigger update
+      $selectedDoc.segments = segments;
     }
   }
 
