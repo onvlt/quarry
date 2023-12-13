@@ -5,10 +5,6 @@
 <li><button on:click class:active {...$$props}><slot /></button></li>
 
 <style>
-  li {
-    margin: 0 -0.5rem;
-  }
-
   button {
     display: block;
     border-radius: var(--radius-md);

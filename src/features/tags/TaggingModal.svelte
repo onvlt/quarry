@@ -2,10 +2,11 @@
   import { docState, selectedDoc } from "../docs/store";
   import { tags } from "./store";
   import Button from "../../ui/Button.svelte";
-  import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
   import { createSegment } from "../segments/helpers";
   import type { Tag } from "./types";
+  import TagListItem from "./TagListItem.svelte";
+  import Input from "../../ui/Input.svelte";
 
   let searchInput: HTMLInputElement;
   let tagSearch = "";
@@ -40,8 +41,12 @@
 
 <div class="container">
   <div class="toolbar">
-    <div>
-      <input type="text" bind:this={searchInput} bind:value={tagSearch} />
+    <div class="input-wrapper">
+      <Input
+        type="text"
+        bind:inputElement={searchInput}
+        bind:value={tagSearch}
+      />
     </div>
     <div class="close">
       <Button on:click={handleClose}>&times;</Button>
@@ -49,7 +54,7 @@
   </div>
   <NavList>
     {#each filteredTags as tag}
-      <NavItem on:click={() => assignTag(tag)}>{tag.name}</NavItem>
+      <TagListItem {tag} on:click={() => assignTag(tag)} />
     {/each}
   </NavList>
 </div>
@@ -58,6 +63,10 @@
   .container {
     padding: 0.5rem 1rem;
     border-bottom: var(--border);
+  }
+
+  .input-wrapper {
+    margin-bottom: 0.25rem;
   }
 
   .toolbar {

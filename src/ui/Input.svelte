@@ -1,8 +1,9 @@
 <script lang="ts">
   export let inputElement: HTMLInputElement;
+  export let value: string;
 </script>
 
-<input bind:this={inputElement} {...$$props} />
+<input bind:this={inputElement} bind:value {...$$props} />
 
 <style>
   input {
