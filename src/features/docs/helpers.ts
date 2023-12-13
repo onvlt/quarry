@@ -1,5 +1,6 @@
 import type { Doc, DocState, FlattenedSpan } from "./types";
 import type { TextRange } from "../segments/types";
+import { docState } from "./store";
 
 function createFlattenedSpan(
   doc: Doc,
@@ -37,45 +38,35 @@ export function toFlattenedSpans(
   };
 
   for (let index = 0; index < doc.content.length; index++) {
-    let nextState: LoopState | null = null;
+    let didChange = false;
+    let nextState: Partial<LoopState> = {};
 
     if (state.selectedRange) {
       const [selectionStart, selectionEnd] = state.selectedRange;
       if (index === selectionStart) {
-        nextState = {
-          ...currentState,
-          selected: true,
-        };
+        nextState.selected = true;
+        didChange = true;
       }
       if (index === selectionEnd) {
-        nextState = {
-          ...currentState,
-          selected: false,
-        };
+        nextState.selected = false;
+        didChange = true;
       }
     }
 
     for (let segment of doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
+      nextState.segments = new Set(currentState.segments);
       if (index === segmentStart) {
-        const segments = new Set(currentState.segments);
-        segments.add(segment.id);
-        nextState = {
-          ...currentState,
-          segments,
-        };
+        nextState.segments.add(segment.id);
+        didChange = true;
       }
       if (index === segmentEnd) {
-        const segments = new Set(currentState.segments);
-        segments.delete(segment.id);
-        nextState = {
-          ...currentState,
-          segments,
-        };
+        nextState.segments.delete(segment.id);
+        didChange = true;
       }
     }
 
-    if (nextState) {
+    if (didChange) {
       spans.push(
         createFlattenedSpan(doc, [lastIndex, index], {
           segments: Array.from(currentState.segments),
@@ -86,7 +77,7 @@ export function toFlattenedSpans(
             : "none",
         })
       );
-      currentState = nextState;
+      currentState = { ...currentState, ...nextState };
       lastIndex = index;
     }
   }

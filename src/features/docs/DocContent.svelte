@@ -61,7 +61,6 @@
   }
 
   $: flattenedSpans = toFlattenedSpans(doc, $docState);
-  $: console.log($docState);
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
