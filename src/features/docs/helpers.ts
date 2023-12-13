@@ -55,14 +55,15 @@ export function toFlattenedSpans(
 
     for (let segment of doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
+      const segmentIndex = doc.segments.indexOf(segment);
       if (index === segmentStart) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.add(segment.id);
+        nextState.segments.add(segmentIndex);
         didChange = true;
       }
       if (index === segmentEnd) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.delete(segment.id);
+        nextState.segments.delete(segmentIndex);
         didChange = true;
       }
     }

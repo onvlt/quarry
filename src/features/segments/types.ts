@@ -1,7 +1,6 @@
 import type { Tag } from "../tags/types";
 
 export interface Segment {
-  id: number;
   range: TextRange;
   tags: Array<Tag>;
 }

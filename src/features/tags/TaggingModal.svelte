@@ -53,9 +53,7 @@
         }
       } else {
         // Create new segment
-        segments.push(
-          createSegment($selectedDoc, $docState.selectedRange, [tag]),
-        );
+        segments.push(createSegment($docState.selectedRange, [tag]));
       }
 
       // Assign to trigger update
