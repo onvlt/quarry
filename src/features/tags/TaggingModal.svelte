@@ -31,12 +31,25 @@
       );
 
       if (existingSegment) {
-        existingSegment.tags.push(tag);
+        if (existingSegment.tags.includes(tag)) {
+          existingSegment.tags = existingSegment.tags.filter(
+            (otherTag) => otherTag !== tag,
+          );
+
+          if (existingSegment.tags.length === 0) {
+            $selectedDoc.segments = $selectedDoc.segments.filter(
+              (segment) => segment !== existingSegment,
+            );
+          }
+        } else {
+          existingSegment.tags.push(tag);
+        }
       } else {
         $selectedDoc.segments.push(
           createSegment($selectedDoc, $docState.selectedRange, [tag]),
         );
       }
+
       $selectedDoc.segments = $selectedDoc.segments;
     }
   }
