@@ -16,10 +16,24 @@
         self.contains(selection.focusNode)
       ) {
         $docState.mode = "tagging";
-        $docState.selectedRange = [
-          selection.anchorOffset,
-          selection.focusOffset,
-        ];
+        console.log("selection", selection);
+
+        if (
+          selection.anchorNode?.parentElement instanceof HTMLSpanElement &&
+          selection.focusNode?.parentElement instanceof HTMLSpanElement
+        ) {
+          const anchorSpanOffset = Number(
+            selection.anchorNode.parentElement.dataset.start,
+          );
+          const focusSpanOffset = Number(
+            selection.focusNode.parentElement.dataset.start,
+          );
+
+          $docState.selectedRange = [
+            selection.anchorOffset + anchorSpanOffset,
+            selection.focusOffset + focusSpanOffset,
+          ];
+        }
       }
     }
 

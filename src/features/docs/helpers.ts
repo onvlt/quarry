@@ -66,7 +66,6 @@ export function toFlattenedSpans(
     }
 
     if (nextState) {
-      console.log(lastIndex);
       spans.push({
         range: [lastIndex, index],
         segments: Array.from(currentState.segments),
@@ -84,7 +83,6 @@ export function toFlattenedSpans(
     });
   }
 
-  console.log(spans);
   return spans;
 }
 
@@ -94,12 +92,13 @@ export function toHtml(doc: Doc, state: DocState): string {
   for (let span of toFlattenedSpans(doc, state)) {
     const content = doc.content.substring(...span.range);
     const classes = [
+      "range",
       span.segments.length > 0 ? "segment" : undefined,
       span.selected ? "selected" : undefined,
     ]
       .filter((x) => x)
       .join(" ");
-    string += `<span class="${classes}">${content}</span>`;
+    string += `<span class="${classes}" data-start=${span.range[0]} data-end=${span.range[1]}>${content}</span>`;
   }
 
   return string;
