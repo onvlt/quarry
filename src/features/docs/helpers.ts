@@ -55,12 +55,13 @@ export function toFlattenedSpans(
 
     for (let segment of doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
-      nextState.segments = new Set(currentState.segments);
       if (index === segmentStart) {
+        nextState.segments = new Set(currentState.segments);
         nextState.segments.add(segment.id);
         didChange = true;
       }
       if (index === segmentEnd) {
+        nextState.segments = new Set(currentState.segments);
         nextState.segments.delete(segment.id);
         didChange = true;
       }
@@ -77,7 +78,11 @@ export function toFlattenedSpans(
             : "none",
         })
       );
-      currentState = { ...currentState, ...nextState };
+      currentState = {
+        selected: nextState.selected ?? currentState.selected,
+        segments: nextState.segments ?? currentState.segments,
+      };
+      console.log(currentState);
       lastIndex = index;
     }
   }
