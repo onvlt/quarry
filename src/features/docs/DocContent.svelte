@@ -63,11 +63,14 @@
     padding: 1rem;
   }
 
-  :global(.segment) {
-    background-color: var(--gray-6);
+  .segment {
+    background-color: var(--gray-9);
   }
-  :global(.selected) {
-    background-color: yellow;
+
+  .selected {
+    background-color: var(--accent-secondary-10);
+    outline: 0.125rem solid var(--accent-secondary-10);
+    border-radius: var(--radius-xs);
     color: black;
   }
 </style>
