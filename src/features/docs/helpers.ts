@@ -3,8 +3,25 @@ import type { TextRange } from "../segments/types";
 
 interface FlattenedSpan {
   range: TextRange;
+  content: string;
   segments: Array<number>;
   selected: boolean;
+}
+
+function createFlattenedSpan(
+  doc: Doc,
+  range: TextRange,
+  {
+    segments = [],
+    selected = false,
+  }: { segments?: Array<number>; selected?: boolean } = {}
+) {
+  return {
+    range,
+    content: doc.content.substring(...range),
+    segments,
+    selected,
+  };
 }
 
 /**
@@ -66,40 +83,19 @@ export function toFlattenedSpans(
     }
 
     if (nextState) {
-      spans.push({
-        range: [lastIndex, index],
-        segments: Array.from(currentState.segments),
-        selected: currentState.selected,
-      });
+      spans.push(
+        createFlattenedSpan(doc, [lastIndex, index], {
+          segments: Array.from(currentState.segments),
+          selected: currentState.selected,
+        })
+      );
       currentState = nextState;
       lastIndex = index;
     }
   }
   if (lastIndex !== doc.content.length - 1) {
-    spans.push({
-      range: [lastIndex, doc.content.length - 1],
-      segments: [],
-      selected: false,
-    });
+    spans.push(createFlattenedSpan(doc, [lastIndex, doc.content.length - 1]));
   }
 
   return spans;
-}
-
-export function toHtml(doc: Doc, state: DocState): string {
-  let string = "";
-
-  for (let span of toFlattenedSpans(doc, state)) {
-    const content = doc.content.substring(...span.range);
-    const classes = [
-      "range",
-      span.segments.length > 0 ? "segment" : undefined,
-      span.selected ? "selected" : undefined,
-    ]
-      .filter((x) => x)
-      .join(" ");
-    string += `<span class="${classes}" data-start=${span.range[0]} data-end=${span.range[1]}>${content}</span>`;
-  }
-
-  return string;
 }

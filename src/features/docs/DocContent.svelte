@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toHtml } from "./helpers";
+  import { toFlattenedSpans } from "./helpers";
   import type { Doc } from "./types";
   import { docState } from "../../store";
   import TaggingModal from "./TaggingModal.svelte";
@@ -42,7 +42,7 @@
     }
   }
 
-  $: html = toHtml(doc, $docState);
+  $: flattenedSpans = toFlattenedSpans(doc, $docState);
   $: console.log($docState.selectedRange);
 </script>
 
@@ -51,7 +51,11 @@
 <TaggingModal />
 
 <div class="doc" bind:this={self}>
-  {@html html}
+  {#each flattenedSpans as span}<span
+      data-start={span.range[0]}
+      class:segment={span.segments.length > 0}
+      class:selected={span.selected}>{span.content}</span
+    >{/each}
 </div>
 
 <style>
