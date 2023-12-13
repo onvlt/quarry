@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { docs, selectedDoc } from "../../store";
+  import { selectedDoc, docs } from "./store";
   import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
   import type { Doc } from "./types";

@@ -1,7 +1,7 @@
 <script lang="ts">
   import DocView from "./features/docs/DocView.svelte";
   import Sidebar from "./ui/Sidebar.svelte";
-  import { selectedDoc } from "./store";
+  import { selectedDoc } from "./features/docs/store";
 </script>
 
 <main class="container">

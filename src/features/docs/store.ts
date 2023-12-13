@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import type { Doc, DocState } from "./features/docs/types";
+import type { Doc, DocState } from "./types";
 
 export const selectedDoc = writable<Doc | null>(null);
 

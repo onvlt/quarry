@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toFlattenedSpans } from "./helpers";
   import type { Doc } from "./types";
-  import { docState } from "../../store";
+  import { docState } from "./store";
   import TaggingModal from "./TaggingModal.svelte";
   import InlineTaggingModal from "./InlineTaggingModal.svelte";
 

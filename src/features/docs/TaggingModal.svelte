@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { docState, selectedDoc } from "../../store";
+  import { docState, selectedDoc } from "./store";
   import { tags } from "../tags/store";
   import Button from "../../ui/Button.svelte";
   import NavItem from "../../ui/NavItem.svelte";
