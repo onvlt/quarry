@@ -16,7 +16,6 @@
         self.contains(selection.focusNode)
       ) {
         $docState.mode = "tagging";
-        console.log("selection", selection);
 
         if (
           selection.anchorNode?.parentElement instanceof HTMLSpanElement &&
@@ -43,7 +42,6 @@
   }
 
   $: flattenedSpans = toFlattenedSpans(doc, $docState);
-  $: console.log($docState.selectedRange);
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
