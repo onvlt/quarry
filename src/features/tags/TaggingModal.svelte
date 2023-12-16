@@ -7,7 +7,7 @@
   import type { Tag } from "./types";
   import TagListItem from "./TagListItem.svelte";
   import Input from "../../ui/Input.svelte";
-  import { fade, fly, scale } from "svelte/transition";
+  import { fade } from "svelte/transition";
 
   let searchInput: HTMLInputElement | undefined;
   let tagSearch = "";

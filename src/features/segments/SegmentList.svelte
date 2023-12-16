@@ -8,7 +8,7 @@
   $: doc = $docState!.doc;
 
   function selectSegment(segment: Segment) {
-    docState.toNormalMode();
+    docState.toNormalMode(segment);
   }
 </script>
 

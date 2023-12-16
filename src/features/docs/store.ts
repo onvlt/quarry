@@ -29,13 +29,13 @@ function createDocStore() {
     });
   }
 
-  function toNormalMode() {
+  function toNormalMode(selectedSegment: Segment | null = null) {
     update((state) => {
       if (state) {
         return {
           ...state,
           mode: "normal",
-          selectedSegment: null,
+          selectedSegment,
           selectedRange: null,
         };
       }
@@ -56,8 +56,8 @@ function createDocStore() {
   return {
     subscribe,
     setDocument,
-    toSelectionMode,
     toNormalMode,
+    toSelectionMode,
     setSegments,
   };
 }
