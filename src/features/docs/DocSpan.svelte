@@ -7,7 +7,7 @@
 
   $: active =
     $docState.selectedSegment !== null &&
-    span.segments.includes($docState.selectedSegment.id);
+    span.segments.includes($docState.selectedSegment);
 </script>
 
 <span
@@ -21,7 +21,7 @@
 <style>
   span {
     box-decoration-break: clone;
-    padding: 0.15em 0;
+    padding: 0.22em 0;
     border-radius: 2px;
   }
 

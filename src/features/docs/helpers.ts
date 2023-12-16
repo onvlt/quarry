@@ -1,5 +1,5 @@
 import type { Doc, DocState, FlattenedSpan } from "./types";
-import type { TextRange } from "../segments/types";
+import type { Segment, TextRange } from "../segments/types";
 import { docState } from "./store";
 
 function createFlattenedSpan(
@@ -8,8 +8,8 @@ function createFlattenedSpan(
   {
     segments = [],
     selected = "none",
-  }: { segments?: Array<number>; selected?: "mid" | "last" | "none" } = {}
-) {
+  }: { segments?: Array<Segment>; selected?: "mid" | "last" | "none" } = {}
+): FlattenedSpan {
   return {
     range,
     content: doc.content.substring(...range),
@@ -28,7 +28,7 @@ export function toFlattenedSpans(
 ): Array<FlattenedSpan> {
   type LoopState = {
     selected: boolean;
-    segments: Set<number>;
+    segments: Set<Segment>;
   };
   let spans: Array<FlattenedSpan> = [];
   let lastIndex = 0;
@@ -55,15 +55,14 @@ export function toFlattenedSpans(
 
     for (let segment of doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
-      const segmentIndex = doc.segments.indexOf(segment);
       if (index === segmentStart) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.add(segmentIndex);
+        nextState.segments.add(segment);
         didChange = true;
       }
       if (index === segmentEnd) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.delete(segmentIndex);
+        nextState.segments.delete(segment);
         didChange = true;
       }
     }

@@ -20,6 +20,6 @@ export interface DocState {
 export interface FlattenedSpan {
   range: TextRange;
   content: string;
-  segments: Array<number>;
+  segments: Array<Segment>;
   selected: "mid" | "last" | "none";
 }
