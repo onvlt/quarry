@@ -51,29 +51,14 @@ function createDocStore() {
   function toggleTag(tag: Tag) {
     update((state) => {
       if (state && state.mode === "selection" && state.workingSegment) {
-        const tags = state.workingSegment.tags;
+        const { range, tags } = state.workingSegment;
+
         if (tags.has(tag)) {
           tags.delete(tag);
         } else {
           tags.add(tag);
         }
 
-        updateSegment(state.workingSegment.range, tags);
-        return {
-          ...state,
-          workingSegment: {
-            ...state.workingSegment,
-            tags,
-          },
-        };
-      }
-      return state;
-    });
-  }
-
-  function updateSegment(range: TextRange, tags: Set<Tag>) {
-    update((state) => {
-      if (state) {
         const existingSegment = state.doc.segments.find((segment) =>
           rangesEqual(segment.range, range)
         );
@@ -90,10 +75,9 @@ function createDocStore() {
           const newSegment = { range, tags };
           state.doc.segments.push(newSegment);
         }
-
-        return state;
       }
-      return null;
+
+      return state;
     });
   }
 
