@@ -37,8 +37,8 @@ export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
     let didChange = false;
     let nextState: Partial<LoopState> = {};
 
-    if (state.selectedRange) {
-      const [selectionStart, selectionEnd] = state.selectedRange;
+    if (state.workingSegment) {
+      const [selectionStart, selectionEnd] = state.workingSegment.range;
       if (index === selectionStart) {
         nextState.selected = true;
         didChange = true;

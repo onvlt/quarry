@@ -2,6 +2,8 @@ import { writable } from "svelte/store";
 import type { Doc, DocState } from "./types";
 import type { Segment, TextRange } from "../segments/types";
 import { _tags } from "../tags/store";
+import type { Tag } from "../tags/types";
+import { rangesEqual } from "../segments/helpers";
 
 function createDocStore() {
   const { subscribe, set, update } = writable<DocState | null>(null);
@@ -10,19 +12,22 @@ function createDocStore() {
     set({
       doc,
       mode: "normal",
-      selectedRange: null,
+      workingSegment: null,
       selectedSegment: null,
     });
   }
 
-  function toSelectionMode(selectedRange: TextRange) {
+  function toSelectionMode(range: TextRange) {
     update((state) => {
       if (state) {
         return {
           ...state,
           mode: "selection",
           selectedSegment: null,
-          selectedRange,
+          workingSegment: {
+            range,
+            tags: new Set(),
+          },
         };
       }
       return null;
@@ -36,17 +41,56 @@ function createDocStore() {
           ...state,
           mode: "normal",
           selectedSegment,
-          selectedRange: null,
+          workingSegment: null,
         };
       }
       return null;
     });
   }
 
-  function setSegments(segments: Array<Segment>) {
+  function toggleTag(tag: Tag) {
+    update((state) => {
+      if (state && state.mode === "selection" && state.workingSegment) {
+        const tags = state.workingSegment.tags;
+        if (tags.has(tag)) {
+          tags.delete(tag);
+        } else {
+          tags.add(tag);
+        }
+
+        updateSegment(state.workingSegment.range, tags);
+        return {
+          ...state,
+          workingSegment: {
+            ...state.workingSegment,
+            tags,
+          },
+        };
+      }
+      return state;
+    });
+  }
+
+  function updateSegment(range: TextRange, tags: Set<Tag>) {
     update((state) => {
       if (state) {
-        state.doc.segments = segments;
+        const existingSegment = state.doc.segments.find((segment) =>
+          rangesEqual(segment.range, range)
+        );
+
+        if (existingSegment) {
+          if (tags.size === 0) {
+            state.doc.segments = state.doc.segments.filter(
+              (segment) => segment !== existingSegment
+            );
+          } else {
+            existingSegment.tags = tags;
+          }
+        } else {
+          const newSegment = { range, tags };
+          state.doc.segments.push(newSegment);
+        }
+
         return state;
       }
       return null;
@@ -58,7 +102,7 @@ function createDocStore() {
     setDocument,
     toNormalMode,
     toSelectionMode,
-    setSegments,
+    toggleTag,
   };
 }
 
@@ -83,9 +127,9 @@ První legitimní cesta do areálu je z Bubenské, je tam vjezd chráněný záv
 V budově sídlí organizace Památník ticha, „paměťová instituce“ s cílem pěstovat paměť holokaustu. Jejím projektem je z nádraží učinit památník holokaustu. Historicky tato budova sloužila jako místo, odkud byli vypravováni židé do koncentráků. Organizace uzavřela v roce 2021 smlouvu se Správou železnic o zapůjčení nádraží na tento projekt na 99 let. Spolu s tím stránka odhaluje vizualizaci developmentu nadrážní budovy a bezprostřeního okolí (wow tolik betonu, tam to bude v lětě děsně rozpálený)
 `,
     segments: [
-      { range: [0, 40], tags: [_tags[0]] },
-      { range: [30, 50], tags: [_tags[0], _tags[1]] },
-      { range: [500, 800], tags: [_tags[1]] },
+      { range: [0, 40], tags: new Set([_tags[0]]) },
+      { range: [30, 50], tags: new Set([_tags[0], _tags[1]]) },
+      { range: [500, 800], tags: new Set([_tags[1]]) },
     ],
   },
 ]);
