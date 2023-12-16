@@ -6,6 +6,7 @@
   export let span: FlattenedSpan;
 
   $: active =
+    $docState &&
     $docState.selectedSegment !== null &&
     span.segments.includes($docState.selectedSegment);
 </script>

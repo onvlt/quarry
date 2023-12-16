@@ -1,35 +1,68 @@
 import { writable } from "svelte/store";
 import type { Doc, DocState } from "./types";
-import type { TextRange } from "../segments/types";
+import type { Segment, TextRange } from "../segments/types";
 import { _tags } from "../tags/store";
 
-export const selectedDoc = writable<Doc | null>(null);
+function createDocStore() {
+  const { subscribe, set, update } = writable<DocState | null>(null);
 
-export const docState = writable<DocState>({
-  mode: "normal",
-  selectedRange: null,
-  selectedSegment: null,
-});
+  function setDocument(doc: Doc) {
+    set({
+      doc,
+      mode: "normal",
+      selectedRange: null,
+      selectedSegment: null,
+    });
+  }
 
-export function toSelectionMode(
-  docState: DocState,
-  selectedRange: TextRange
-): DocState {
+  function toSelectionMode(selectedRange: TextRange) {
+    update((state) => {
+      if (state) {
+        return {
+          ...state,
+          mode: "selection",
+          selectedSegment: null,
+          selectedRange,
+        };
+      }
+      return null;
+    });
+  }
+
+  function toNormalMode() {
+    update((state) => {
+      if (state) {
+        return {
+          ...state,
+          mode: "normal",
+          selectedSegment: null,
+          selectedRange: null,
+        };
+      }
+      return null;
+    });
+  }
+
+  function setSegments(segments: Array<Segment>) {
+    update((state) => {
+      if (state) {
+        state.doc.segments = segments;
+        return state;
+      }
+      return null;
+    });
+  }
+
   return {
-    ...docState,
-    mode: "selection",
-    selectedSegment: null,
-    selectedRange,
+    subscribe,
+    setDocument,
+    toSelectionMode,
+    toNormalMode,
+    setSegments,
   };
 }
 
-export function toNormalMode(docState: DocState): DocState {
-  return {
-    ...docState,
-    mode: "normal",
-    selectedRange: null,
-  };
-}
+export const docState = createDocStore();
 
 export const docs = writable<Array<Doc>>([
   {

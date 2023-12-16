@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { selectedDoc, docs } from "./store";
+  import { docState, docs } from "./store";
   import NavItem from "../../ui/NavItem.svelte";
   import NavList from "../../ui/NavList.svelte";
   import type { Doc } from "./types";
 
   function onClick(event: Event, doc: Doc) {
     event.preventDefault();
-    $selectedDoc = doc;
+    docState.setDocument(doc);
   }
 </script>
 
@@ -14,7 +14,7 @@
   {#each $docs as doc}
     <NavItem
       on:click={(event) => onClick(event, doc)}
-      active={$selectedDoc?.id === doc.id}
+      active={$docState?.doc.id === doc.id}
     >
       {doc.title}
     </NavItem>

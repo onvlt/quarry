@@ -1,6 +1,5 @@
 import type { Doc, DocState, FlattenedSpan } from "./types";
 import type { Segment, TextRange } from "../segments/types";
-import { docState } from "./store";
 
 function createFlattenedSpan(
   doc: Doc,
@@ -22,10 +21,7 @@ function createFlattenedSpan(
  * Convert array of possibly overlapping segments into array of non-overlapping
  * "spans", which can be easily expressed as HTML spans.
  */
-export function toFlattenedSpans(
-  doc: Doc,
-  state: DocState
-): Array<FlattenedSpan> {
+export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
   type LoopState = {
     selected: boolean;
     segments: Set<Segment>;
@@ -37,7 +33,7 @@ export function toFlattenedSpans(
     segments: new Set(),
   };
 
-  for (let index = 0; index < doc.content.length; index++) {
+  for (let index = 0; index < state.doc.content.length; index++) {
     let didChange = false;
     let nextState: Partial<LoopState> = {};
 
@@ -53,7 +49,7 @@ export function toFlattenedSpans(
       }
     }
 
-    for (let segment of doc.segments) {
+    for (let segment of state.doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
       if (index === segmentStart) {
         nextState.segments = new Set(currentState.segments);
@@ -69,7 +65,7 @@ export function toFlattenedSpans(
 
     if (didChange) {
       spans.push(
-        createFlattenedSpan(doc, [lastIndex, index], {
+        createFlattenedSpan(state.doc, [lastIndex, index], {
           segments: Array.from(currentState.segments),
           selected: currentState.selected
             ? nextState.selected
@@ -86,8 +82,10 @@ export function toFlattenedSpans(
       lastIndex = index;
     }
   }
-  if (lastIndex !== doc.content.length - 1) {
-    spans.push(createFlattenedSpan(doc, [lastIndex, doc.content.length - 1]));
+  if (lastIndex !== state.doc.content.length - 1) {
+    spans.push(
+      createFlattenedSpan(state.doc, [lastIndex, state.doc.content.length - 1])
+    );
   }
 
   return spans;

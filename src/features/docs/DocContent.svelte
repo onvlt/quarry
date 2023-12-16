@@ -1,12 +1,10 @@
 <script lang="ts">
   import { toFlattenedSpans } from "./helpers";
-  import type { Doc } from "./types";
-  import { docState, toNormalMode, toSelectionMode } from "./store";
+  import { docState } from "./store";
   import TaggingModal from "../tags/TaggingModal.svelte";
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
 
-  export let doc: Doc;
   let self: HTMLElement;
 
   function getValidSelection(): TextRange | null {
@@ -42,30 +40,30 @@
     if (event.key === "Enter") {
       const selectionRange = getValidSelection();
       if (selectionRange) {
-        $docState = toSelectionMode($docState, selectionRange);
+        docState.toSelectionMode(selectionRange);
       }
     }
 
     if (event.key === "Escape") {
-      $docState = toNormalMode($docState);
+      docState.toNormalMode();
     }
   }
 
   function handleMouseUp() {
-    if ($docState.mode === "selection") {
+    if ($docState && $docState.mode === "selection") {
       const selectionRange = getValidSelection();
       if (selectionRange) {
-        $docState = toSelectionMode($docState, selectionRange);
+        docState.toSelectionMode(selectionRange);
       }
     }
   }
 
-  $: flattenedSpans = toFlattenedSpans(doc, $docState);
+  $: flattenedSpans = toFlattenedSpans($docState!);
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
 
-{#if $docState.mode === "selection"}
+{#if $docState && $docState.mode === "selection"}
   <TaggingModal />
 {/if}
 

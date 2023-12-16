@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { docState, selectedDoc, toNormalMode } from "../docs/store";
+  import { docState } from "../docs/store";
   import { tags } from "./store";
   import Button from "../../ui/Button.svelte";
   import NavList from "../../ui/NavList.svelte";
@@ -13,25 +13,24 @@
   let tagSearch = "";
 
   $: {
-    if ($docState.mode === "selection" && searchInput) {
+    if ($docState!.mode === "selection" && searchInput) {
       searchInput.focus();
     }
   }
 
   function assignTag(tag: Tag) {
     if (
-      $selectedDoc &&
+      $docState &&
       $docState.mode === "selection" &&
       $docState.selectedRange
     ) {
-      let segments = $selectedDoc.segments;
+      const selectedRange = $docState.selectedRange;
+      let segments = $docState.doc.segments;
 
       // Find out if there is some existing segment with exact same range
       // so we can reuse it without creating new segment
       const existingSegment = segments.find((segment) =>
-        [0, 1].every(
-          (index) => segment.range[index] === $docState.selectedRange![index],
-        ),
+        [0, 1].every((index) => segment.range[index] === selectedRange[index]),
       );
 
       if (existingSegment) {
@@ -56,13 +55,13 @@
         segments.push(createSegment($docState.selectedRange, [tag]));
       }
 
-      // Assign to trigger update
-      $selectedDoc.segments = segments;
+      // Trigger update
+      docState.setSegments(segments);
     }
   }
 
   function handleClose() {
-    $docState = toNormalMode($docState);
+    docState.toNormalMode();
   }
 
   $: filteredTags = $tags.filter((tag) =>

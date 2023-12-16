@@ -3,9 +3,9 @@
   import DocContent from "./DocContent.svelte";
   import SegmentList from "../segments/SegmentList.svelte";
   import type { Doc } from "./types";
+  import { docState } from "./store";
 
-  export let doc: Doc;
-
+  $: doc = $docState!.doc;
   $: editMode = false;
 
   function toggleEditMode() {
@@ -19,11 +19,11 @@
 </div>
 
 <div class="doc-pane">
-  <DocContent {doc} />
+  <DocContent />
 </div>
 
 <div class="segment-pane">
-  <SegmentList {doc} />
+  <SegmentList />
 </div>
 
 <style>

@@ -1,13 +1,13 @@
 <script lang="ts">
   import DocView from "./features/docs/DocView.svelte";
+  import { docState } from "./features/docs/store";
   import Sidebar from "./ui/Sidebar.svelte";
-  import { selectedDoc } from "./features/docs/store";
 </script>
 
 <main>
   <Sidebar />
-  {#if $selectedDoc}
-    <DocView doc={$selectedDoc} />
+  {#if $docState}
+    <DocView />
   {/if}
 </main>
 

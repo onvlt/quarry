@@ -13,6 +13,7 @@ export type DocMode = "normal" | "selection";
 
 export interface DocState {
   mode: DocMode;
+  doc: Doc;
   selectedRange: TextRange | null;
   selectedSegment: Segment | null;
 }
