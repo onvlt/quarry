@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { toFlattenedSpans } from "./helpers";
+  import { toSpans } from "./helpers";
   import { docState } from "./store";
   import TaggingModal from "../tags/TaggingModal.svelte";
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
+  import type { Span } from "./types";
 
   let self: HTMLElement;
 
@@ -58,7 +59,22 @@
     }
   }
 
-  $: flattenedSpans = toFlattenedSpans($docState!);
+  function separateSelectedSpans(selection: TextRange, spans: Array<Span>) {
+    return {
+      beforeSelection: spans.filter((span) => span.range[1] <= selection[0]),
+      selection: spans.filter(
+        (span) =>
+          span.range[0] >= selection[0] && span.range[1] <= selection[1],
+      ),
+      afterSelection: spans.filter((span) => span.range[0] >= selection[1]),
+    };
+  }
+
+  $: spans = toSpans($docState!);
+  $: separatedSpans =
+    $docState?.mode === "selection" && $docState.selectionRange
+      ? separateSelectedSpans($docState.selectionRange, spans)
+      : null;
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
@@ -74,7 +90,17 @@
   role="textbox"
   tabindex="0"
 >
-  {#each flattenedSpans as span}<DocSpan {span} />{/each}
+  {#if separatedSpans}
+    {#each separatedSpans.beforeSelection as span}<DocSpan {span} />{/each}<span
+      class="selected"
+      >{#each separatedSpans.selection as span}<DocSpan
+          {span}
+          selected
+        />{/each}</span
+    >{#each separatedSpans.afterSelection as span}<DocSpan {span} />{/each}
+  {:else}
+    {#each spans as span}<DocSpan {span} />{/each}
+  {/if}
 </div>
 
 <style>
@@ -82,5 +108,13 @@
     max-width: 600px;
     white-space: pre-wrap;
     padding: 1rem;
+  }
+
+  .selected {
+    box-decoration-break: clone;
+    padding: 0.22em 0;
+    border-radius: 0.1em;
+    background-color: var(--accent-secondary-10);
+    color: black;
   }
 </style>

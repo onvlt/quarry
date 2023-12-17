@@ -1,4 +1,4 @@
-<!-- <span class="wrapper">
+<span class="wrapper">
   <div class="tagging-modal">Tagging modal</div>
 </span>
 
@@ -15,4 +15,4 @@
     padding: 0.75rem 1rem;
     border-radius: var(--radius-md);
   }
-</style> -->
+</style>

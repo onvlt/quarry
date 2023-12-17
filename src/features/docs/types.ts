@@ -18,9 +18,7 @@ export interface DocState {
   selectedSegmentKey: SegmentKey | null;
 }
 
-export interface FlattenedSpan {
+export interface Span {
   range: TextRange;
-  content: string;
   segments: Set<SegmentKey>;
-  selected: "mid" | "last" | "none";
 }

@@ -8,6 +8,7 @@
   const text = $docState!.doc.content.substring(...segment.range);
 </script>
 
+<p>{segment.range[0]} - {segment.range[1]}</p>
 <p class="content">{text}</p>
 <ul class="tag-list">
   {#each segment.tags as tag}
