@@ -6,6 +6,7 @@
   import DocSpan from "./DocSpan.svelte";
   import type { Span } from "./types";
   import { rangeFromTuple } from "../segments/helpers";
+  import Selection from "./Selection.svelte";
 
   let self: HTMLElement;
 
@@ -95,12 +96,13 @@
   tabindex="0"
 >
   {#if separatedSpans}
-    {#each separatedSpans.beforeSelection as span}<DocSpan {span} />{/each}<span
-      class="selected"
+    {#each separatedSpans.beforeSelection as span}<DocSpan
+        {span}
+      />{/each}<Selection
       >{#each separatedSpans.selection as span}<DocSpan
           {span}
           selected
-        />{/each}</span
+        />{/each}</Selection
     >{#each separatedSpans.afterSelection as span}<DocSpan {span} />{/each}
   {:else}
     {#each spans as span}<DocSpan {span} />{/each}
@@ -112,13 +114,5 @@
     max-width: 600px;
     white-space: pre-wrap;
     padding: 1rem;
-  }
-
-  .selected {
-    box-decoration-break: clone;
-    padding: 0.22em 0;
-    border-radius: 0.1em;
-    background-color: var(--accent-secondary-10);
-    color: black;
   }
 </style>
