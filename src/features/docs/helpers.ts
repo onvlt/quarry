@@ -78,7 +78,6 @@ export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
         selected: nextState.selected ?? currentState.selected,
         segments: nextState.segments ?? currentState.segments,
       };
-      console.log(currentState);
       lastIndex = index;
     }
   }

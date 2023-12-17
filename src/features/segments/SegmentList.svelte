@@ -5,7 +5,9 @@
   import { docState } from "../docs/store";
   import type { SegmentKey } from "./types";
 
-  $: doc = $docState!.doc;
+  $: sortedSegments = Array.from($docState!.doc.segments.entries()).sort(
+    ([key1], [key2]) => key1.localeCompare(key2),
+  );
 
   function selectSegment(key: SegmentKey) {
     docState.toNormalMode(key);
@@ -13,7 +15,7 @@
 </script>
 
 <NavList>
-  {#each doc.segments as [key, segment]}
+  {#each sortedSegments as [key, segment] (key)}
     <NavItem
       on:click={() => selectSegment(key)}
       active={$docState?.selectedSegmentKey === key}
