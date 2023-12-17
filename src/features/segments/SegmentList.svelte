@@ -6,7 +6,7 @@
   import type { SegmentKey } from "./types";
 
   $: sortedSegments = Array.from($docState!.doc.segments.entries()).sort(
-    ([key1], [key2]) => key1.localeCompare(key2),
+    ([, a], [, b]) => a.range[0] - b.range[0],
   );
 
   function selectSegment(key: SegmentKey) {
