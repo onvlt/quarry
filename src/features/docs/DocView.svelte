@@ -38,6 +38,7 @@
   .doc-pane {
     grid-area: doc;
     overflow-y: auto;
+    position: relative;
   }
 
   .segment-pane {

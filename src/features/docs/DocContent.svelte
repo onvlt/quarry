@@ -1,12 +1,12 @@
 <script lang="ts">
   import { toSpans } from "./helpers";
   import { docState } from "./store";
-  import TaggingModal from "../tags/TaggingModal.svelte";
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
   import type { Span } from "./types";
   import { rangeFromTuple } from "../segments/helpers";
   import Selection from "./Selection.svelte";
+  import SelectionPopover from "./SelectionPopover.svelte";
 
   let self: HTMLElement;
 
@@ -85,7 +85,7 @@
 <svelte:window on:keyup={handleKeyUp} />
 
 {#if $docState && $docState.mode === "selection"}
-  <TaggingModal />
+  <SelectionPopover />
 {/if}
 
 <div
