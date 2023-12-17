@@ -1,14 +1,15 @@
 <script lang="ts">
   import { docState } from "../docs/store";
   import TagBadge from "../tags/TagBadge.svelte";
+  import { rangeToTuple } from "./helpers";
   import type { Segment } from "./types";
 
   export let segment: Segment;
 
-  const text = $docState!.doc.content.substring(...segment.range);
+  const text = $docState!.doc.content.substring(...rangeToTuple(segment.range));
 </script>
 
-<p>{segment.range[0]} - {segment.range[1]}</p>
+<p>{segment.range.start} - {segment.range.end}</p>
 <p class="content">{text}</p>
 <ul class="tag-list">
   {#each segment.tags as tag}

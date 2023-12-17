@@ -102,9 +102,18 @@ První legitimní cesta do areálu je z Bubenské, je tam vjezd chráněný záv
 V budově sídlí organizace Památník ticha, „paměťová instituce“ s cílem pěstovat paměť holokaustu. Jejím projektem je z nádraží učinit památník holokaustu. Historicky tato budova sloužila jako místo, odkud byli vypravováni židé do koncentráků. Organizace uzavřela v roce 2021 smlouvu se Správou železnic o zapůjčení nádraží na tento projekt na 99 let. Spolu s tím stránka odhaluje vizualizaci developmentu nadrážní budovy a bezprostřeního okolí (wow tolik betonu, tam to bude v lětě děsně rozpálený)
 `,
     segments: new Map([
-      [`50-520`, { range: [50, 520], tags: new Set([_tags[0]]) }],
-      [`321-800`, { range: [321, 800], tags: new Set([_tags[1]]) }],
-      [`500-600`, { range: [500, 600], tags: new Set([_tags[0], _tags[1]]) }],
+      [`50-520`, { range: { start: 50, end: 520 }, tags: new Set([_tags[0]]) }],
+      [
+        `321-800`,
+        { range: { start: 321, end: 800 }, tags: new Set([_tags[1]]) },
+      ],
+      [
+        `500-600`,
+        {
+          range: { start: 500, end: 600 },
+          tags: new Set([_tags[0], _tags[1]]),
+        },
+      ],
     ]),
   },
 ]);

@@ -9,4 +9,7 @@ export type SegmentKey = `${number}-${number}`;
 
 export type Segments = Map<SegmentKey, Segment>;
 
-export type TextRange = [start: number, end: number];
+export interface TextRange {
+  start: number;
+  end: number;
+}

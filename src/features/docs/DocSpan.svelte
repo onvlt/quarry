@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { rangeToTuple } from "../segments/helpers";
   import { docState } from "./store";
   import type { Span } from "./types";
 
   export let span: Span;
   export let selected: boolean = false;
 
-  $: content = $docState!.doc.content.substring(...span.range);
+  $: content = $docState!.doc.content.substring(...rangeToTuple(span.range));
   $: active =
     $docState &&
     $docState.selectedSegmentKey !== null &&
@@ -13,7 +14,7 @@
 </script>
 
 <span
-  data-start={span.range[0]}
+  data-start={span.range.start}
   data-segments={JSON.stringify(Array.from(span.segments))}
   class:segment={span.segments.size > 0}
   class:active

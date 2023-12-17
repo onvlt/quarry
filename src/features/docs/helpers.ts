@@ -1,17 +1,18 @@
 import type { DocState, Span } from "./types";
 import type { TextRange } from "../segments/types";
+import { rangeToTuple } from "../segments/helpers";
 
 export function toSpans(state: DocState) {
   const bounds: Set<number> = new Set([state.doc.content.length - 1]);
 
   for (const [, segment] of state.doc.segments) {
-    for (const index of segment.range) {
+    for (const index of rangeToTuple(segment.range)) {
       bounds.add(index);
     }
   }
 
   if (state.selectionRange) {
-    for (const index of state.selectionRange) {
+    for (const index of rangeToTuple(state.selectionRange)) {
       bounds.add(index);
     }
   }
@@ -22,11 +23,11 @@ export function toSpans(state: DocState) {
   let lastIndex = 0;
 
   for (const index of sortedBounds) {
-    const range: TextRange = [lastIndex, index];
+    const range: TextRange = { start: lastIndex, end: index };
     const segments = segmentsArray
       .filter(
         ([, segment]) =>
-          segment.range[0] <= range[0] && segment.range[1] >= range[1]
+          segment.range.start <= range.start && segment.range.end >= range.end
       )
       .map(([key]) => key);
 

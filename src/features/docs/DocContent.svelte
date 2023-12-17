@@ -5,6 +5,7 @@
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
   import type { Span } from "./types";
+  import { rangeFromTuple } from "../segments/helpers";
 
   let self: HTMLElement;
 
@@ -26,10 +27,10 @@
           selection.focusNode.parentElement.dataset.start,
         );
 
-        const selectionRange: TextRange = [
+        const selectionRange = rangeFromTuple([
           selection.anchorOffset + anchorSpanOffset,
           selection.focusOffset + focusSpanOffset,
-        ].sort((a, b) => a - b) as TextRange;
+        ]);
 
         return selectionRange;
       }
@@ -61,12 +62,15 @@
 
   function separateSelectedSpans(selection: TextRange, spans: Array<Span>) {
     return {
-      beforeSelection: spans.filter((span) => span.range[1] <= selection[0]),
+      beforeSelection: spans.filter(
+        (span) => span.range.end <= selection.start,
+      ),
       selection: spans.filter(
         (span) =>
-          span.range[0] >= selection[0] && span.range[1] <= selection[1],
+          span.range.start >= selection.start &&
+          span.range.end <= selection.end,
       ),
-      afterSelection: spans.filter((span) => span.range[0] >= selection[1]),
+      afterSelection: spans.filter((span) => span.range.start >= selection.end),
     };
   }
 
