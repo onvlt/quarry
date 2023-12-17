@@ -3,22 +3,22 @@
   import NavList from "../../ui/NavList.svelte";
   import SegmentView from "./SegmentView.svelte";
   import { docState } from "../docs/store";
-  import type { Segment } from "./types";
+  import type { SegmentKey } from "./types";
 
   $: doc = $docState!.doc;
 
-  function selectSegment(segment: Segment) {
-    docState.toNormalMode(segment);
+  function selectSegment(key: SegmentKey) {
+    docState.toNormalMode(key);
   }
 </script>
 
 <NavList>
-  {#each doc.segments as segment}
+  {#each doc.segments as [key, segment]}
     <NavItem
-      on:click={() => selectSegment(segment)}
-      active={$docState?.selectedSegment === segment}
+      on:click={() => selectSegment(key)}
+      active={$docState?.selectedSegmentKey === key}
     >
-      <SegmentView {doc} {segment} />
+      <SegmentView {segment} />
     </NavItem>
   {/each}
 </NavList>

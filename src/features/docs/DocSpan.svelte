@@ -7,14 +7,14 @@
 
   $: active =
     $docState &&
-    $docState.selectedSegment !== null &&
-    span.segments.includes($docState.selectedSegment);
+    $docState.selectedSegmentKey !== null &&
+    span.segments.has($docState.selectedSegmentKey);
 </script>
 
 <span
   data-start={span.range[0]}
   class:active
-  class:segment={span.segments.length > 0}
+  class:segment={span.segments.size > 0}
   class:selected={span.selected === "mid" || span.selected === "last"}
   >{span.content}</span
 >{#if span.selected === "last"}<InlineTaggingModal />{/if}

@@ -1,13 +1,13 @@
 import type { Doc, DocState, FlattenedSpan } from "./types";
-import type { Segment, TextRange } from "../segments/types";
+import type { SegmentKey, TextRange } from "../segments/types";
 
 function createFlattenedSpan(
   doc: Doc,
   range: TextRange,
   {
-    segments = [],
+    segments = new Set(),
     selected = "none",
-  }: { segments?: Array<Segment>; selected?: "mid" | "last" | "none" } = {}
+  }: { segments?: Set<SegmentKey>; selected?: "mid" | "last" | "none" } = {}
 ): FlattenedSpan {
   return {
     range,
@@ -24,7 +24,7 @@ function createFlattenedSpan(
 export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
   type LoopState = {
     selected: boolean;
-    segments: Set<Segment>;
+    segments: Set<SegmentKey>;
   };
   let spans: Array<FlattenedSpan> = [];
   let lastIndex = 0;
@@ -37,8 +37,8 @@ export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
     let didChange = false;
     let nextState: Partial<LoopState> = {};
 
-    if (state.workingSegment) {
-      const [selectionStart, selectionEnd] = state.workingSegment.range;
+    if (state.selectionRange) {
+      const [selectionStart, selectionEnd] = state.selectionRange;
       if (index === selectionStart) {
         nextState.selected = true;
         didChange = true;
@@ -49,16 +49,16 @@ export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
       }
     }
 
-    for (let segment of state.doc.segments) {
+    for (let [segmentKey, segment] of state.doc.segments) {
       const [segmentStart, segmentEnd] = segment.range;
       if (index === segmentStart) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.add(segment);
+        nextState.segments.add(segmentKey);
         didChange = true;
       }
       if (index === segmentEnd) {
         nextState.segments = new Set(currentState.segments);
-        nextState.segments.delete(segment);
+        nextState.segments.delete(segmentKey);
         didChange = true;
       }
     }
@@ -66,7 +66,7 @@ export function toFlattenedSpans(state: DocState): Array<FlattenedSpan> {
     if (didChange) {
       spans.push(
         createFlattenedSpan(state.doc, [lastIndex, index], {
-          segments: Array.from(currentState.segments),
+          segments: currentState.segments,
           selected: currentState.selected
             ? nextState.selected
               ? "mid"

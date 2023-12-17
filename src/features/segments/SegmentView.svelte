@@ -1,12 +1,11 @@
 <script lang="ts">
+  import { docState } from "../docs/store";
   import TagBadge from "../tags/TagBadge.svelte";
-  import type { Doc } from "../docs/types";
   import type { Segment } from "./types";
 
-  export let doc: Doc;
   export let segment: Segment;
 
-  const text = doc.content.substring(...segment.range);
+  const text = $docState!.doc.content.substring(...segment.range);
 </script>
 
 <p class="content">{text}</p>
