@@ -7,12 +7,12 @@
   } from "@floating-ui/dom";
   import { docState } from "./store";
 
+  export let selectionSpan: HTMLSpanElement;
   let self: HTMLDivElement;
 
   docState.subscribe(() => {
-    const selection = document.querySelector("#selection");
-    if (self && selection) {
-      computePosition(selection, self, {
+    if (self && selectionSpan) {
+      computePosition(selectionSpan, self, {
         middleware: [inline(), autoPlacement(), offset(8)],
       }).then(({ x, y }) => {
         Object.assign(self.style, {

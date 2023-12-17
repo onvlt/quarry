@@ -9,6 +9,7 @@
   import SelectionPopover from "./SelectionPopover.svelte";
 
   let self: HTMLElement;
+  let selectionSpan: HTMLSpanElement;
 
   function getValidSelection(): TextRange | null {
     const selection = document.getSelection();
@@ -85,7 +86,7 @@
 <svelte:window on:keyup={handleKeyUp} />
 
 {#if $docState && $docState.mode === "selection"}
-  <SelectionPopover />
+  <SelectionPopover {selectionSpan} />
 {/if}
 
 <div
@@ -98,7 +99,7 @@
   {#if separatedSpans}
     {#each separatedSpans.beforeSelection as span}<DocSpan
         {span}
-      />{/each}<Selection
+      />{/each}<Selection bind:selectionSpan
       >{#each separatedSpans.selection as span}<DocSpan
           {span}
           selected

@@ -1,4 +1,8 @@
-<span id="selection" class="selection"><slot /></span>
+<script lang="ts">
+  export let selectionSpan: HTMLSpanElement;
+</script>
+
+<span bind:this={selectionSpan} class="selection"><slot /></span>
 
 <style>
   .selection {
