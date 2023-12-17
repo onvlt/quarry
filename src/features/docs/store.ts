@@ -61,7 +61,11 @@ function createDocStore() {
           segment.tags.add(tag);
         }
 
-        state.doc.segments.set(key, segment);
+        if (segment.tags.size > 0) {
+          state.doc.segments.set(key, segment);
+        } else {
+          state.doc.segments.delete(key);
+        }
       }
 
       return state;
