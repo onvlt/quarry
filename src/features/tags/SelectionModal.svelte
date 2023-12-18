@@ -6,7 +6,12 @@
   import type { Tag } from "./types";
   import { tags } from "./store";
 
-  let tagInput: Combobox<T>;
+  let tagInput: Combobox<Tag>;
+
+  $: selectedSegment =
+    $docState!.selectedSegmentKey &&
+    $docState!.doc.segments.get($docState!.selectedSegmentKey);
+  $: selectedTags = selectedSegment?.tags;
 
   $: {
     if ($docState!.mode === "selection") {
@@ -29,6 +34,7 @@
       bind:this={tagInput}
       items={$tags}
       itemToString={(tag) => tag.name}
+      itemActive={(tag) => selectedTags?.has(tag) ?? false}
       onSelect={handleSelect}
     >
       <div slot="item" let:item>

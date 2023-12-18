@@ -7,6 +7,7 @@
   export let items: Array<T>;
   export let onSelect: ((item: T) => void) | undefined = undefined;
   export let itemToString: (item: T) => string;
+  export let itemActive: ((item: T) => boolean) | undefined = undefined;
 
   let input: HTMLInputElement | undefined;
   let search = "";
@@ -22,13 +23,14 @@
         focusedIndex = Math.min(focusedIndex - 1, items.length - 1);
       }
       if (event.key === "Enter") {
-        handleSelect(items[focusedIndex]);
+        handleSelect(items[focusedIndex], focusedIndex);
       }
     }
   }
 
-  function handleSelect(item: T) {
+  function handleSelect(item: T, index: number) {
     onSelect?.(item);
+    focusedIndex = index;
   }
 
   export function focus() {
@@ -59,7 +61,8 @@
     {#each filteredItems as item, index}
       <NavItem
         focused={index === focusedIndex}
-        on:click={() => handleSelect(item)}
+        active={itemActive?.(item)}
+        on:click={() => handleSelect(item, index)}
       >
         <slot name="item" {item} />
       </NavItem>

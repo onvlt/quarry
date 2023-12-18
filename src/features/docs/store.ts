@@ -24,7 +24,7 @@ function createDocStore() {
           ...state,
           mode: "selection",
           selectionRange: range,
-          selectedSegmentKey: null,
+          selectedSegmentKey: rangeToKey(range),
         };
       }
       return null;
