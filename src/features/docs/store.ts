@@ -5,6 +5,27 @@ import { _tags } from "../tags/store";
 import type { Tag } from "../tags/types";
 import { rangeToKey } from "../segments/helpers";
 
+function toSelectionMode(state: DocState, range: TextRange): DocState {
+  return {
+    ...state,
+    mode: "selection",
+    selectionRange: range,
+    selectedSegmentKey: rangeToKey(range),
+  };
+}
+
+function toNormalMode(
+  state: DocState,
+  selectedSegmentKey: SegmentKey | null = null
+): DocState {
+  return {
+    ...state,
+    mode: "normal",
+    selectionRange: null,
+    selectedSegmentKey,
+  };
+}
+
 function createDocStore() {
   const { subscribe, set, update } = writable<DocState | null>(null);
 
@@ -17,29 +38,22 @@ function createDocStore() {
     });
   }
 
-  function toSelectionMode(range: TextRange) {
+  function selectionMode(range: TextRange) {
     update((state) => {
       if (state) {
-        return {
-          ...state,
-          mode: "selection",
-          selectionRange: range,
-          selectedSegmentKey: rangeToKey(range),
-        };
+        if (range.start === range.end) {
+          return toNormalMode(state);
+        }
+        return toSelectionMode(state, range);
       }
       return null;
     });
   }
 
-  function toNormalMode(selectedSegmentKey: SegmentKey | null = null) {
+  function normalMode(selectedSegmentKey: SegmentKey | null = null) {
     update((state) => {
       if (state) {
-        return {
-          ...state,
-          mode: "normal",
-          selectionRange: null,
-          selectedSegmentKey,
-        };
+        return toNormalMode(state, selectedSegmentKey);
       }
       return null;
     });
@@ -75,8 +89,8 @@ function createDocStore() {
   return {
     subscribe,
     setDocument,
-    toNormalMode,
-    toSelectionMode,
+    toNormalMode: normalMode,
+    toSelectionMode: selectionMode,
     toggleTag,
   };
 }
