@@ -3,9 +3,10 @@
   import type { Tag } from "./types";
 
   export let tag: Tag;
+  export let focused: boolean;
 </script>
 
-<NavItem on:click>
+<NavItem on:click {focused}>
   <span class="tag">
     <svg viewBox="0 0 2 2" width="12">
       <circle cx="1" cy="1" r="1" fill={tag.color} />

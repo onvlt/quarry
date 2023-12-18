@@ -1,8 +1,11 @@
 <script lang="ts">
+  export let focused: boolean = false;
   export let active: boolean = false;
 </script>
 
-<li><button on:click class:active {...$$props}><slot /></button></li>
+<li>
+  <button on:click class:focused class:active {...$$props}><slot /></button>
+</li>
 
 <style>
   button {
@@ -10,9 +13,16 @@
     border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
     padding: 0.25rem 0.5rem;
-    transition: background-color 120ms;
+    transition:
+      background-color 120ms,
+      color 120ms;
     color: var(--gray-11);
     width: 100%;
+  }
+
+  button.focused {
+    background-color: var(--gray-3);
+    color: var(--gray-12);
   }
 
   button.active {
@@ -22,6 +32,6 @@
   }
 
   button:not(.active):hover {
-    background-color: var(--gray-2);
+    background-color: var(--gray-3);
   }
 </style>

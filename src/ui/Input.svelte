@@ -3,7 +3,7 @@
   export let value: string;
 </script>
 
-<input bind:this={inputElement} bind:value {...$$props} />
+<input on:focus bind:this={inputElement} bind:value {...$$props} />
 
 <style>
   input {
@@ -15,5 +15,14 @@
     color: var(--gray-11);
     border: 1px solid var(--gray-6);
     font-size: var(--font-size-sm);
+    transition:
+      border-color 120ms,
+      box-shadow 120ms;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--gray-12);
+    box-shadow: 0 0 0 1px var(--gray-12);
   }
 </style>
