@@ -84,10 +84,6 @@
 
 <svelte:window on:keyup={handleKeyUp} />
 
-{#if $docState && $docState.mode === "selection"}
-  <SelectionModal />
-{/if}
-
 <div
   class="doc"
   bind:this={self}
@@ -108,6 +104,10 @@
     {#each spans as span}<DocSpan {span} />{/each}
   {/if}
 </div>
+
+{#if $docState && $docState.mode === "selection"}
+  <SelectionModal />
+{/if}
 
 <style>
   .doc {

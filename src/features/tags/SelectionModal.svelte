@@ -49,10 +49,10 @@
 
 <style>
   .container {
-    padding: 0.5rem 1rem;
-    border-bottom: var(--border);
+    padding: 1rem;
+    border-top: var(--border);
     position: sticky;
-    top: 0;
+    bottom: 0;
     background-color: var(--gray-1);
   }
 
