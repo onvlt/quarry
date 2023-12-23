@@ -17,10 +17,10 @@
   function handleKeyUp(event: KeyboardEvent) {
     if (hasFocus) {
       if (event.key === "ArrowDown") {
-        focusedIndex = Math.max(focusedIndex + 1, 0);
+        focusedIndex = Math.min(focusedIndex + 1, items.length - 1);
       }
       if (event.key === "ArrowUp") {
-        focusedIndex = Math.min(focusedIndex - 1, items.length - 1);
+        focusedIndex = Math.max(focusedIndex - 1, 0);
       }
       if (event.key === "Enter") {
         handleSelect(items[focusedIndex], focusedIndex);
