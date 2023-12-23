@@ -2,14 +2,19 @@
   import DocView from "./features/docs/DocView.svelte";
   import { docState } from "./features/docs/store";
   import Sidebar from "./ui/Sidebar.svelte";
+  import { platform } from "@tauri-apps/api/os";
+
+  const platformNamePromise = platform();
 </script>
 
-<main>
-  <Sidebar />
-  {#if $docState}
-    <DocView />
-  {/if}
-</main>
+{#await platformNamePromise then platformName}
+  <main>
+    <Sidebar offsetWindowControls={platformName === "darwin"} />
+    {#if $docState}
+      <DocView />
+    {/if}
+  </main>
+{/await}
 
 <style>
   main {

@@ -3,9 +3,11 @@
   import TagList from "../features/tags/TagList.svelte";
   import { tags } from "../features/tags/store";
   import Section from "./Section.svelte";
+
+  export let offsetWindowControls: boolean = false;
 </script>
 
-<div class="sidebar">
+<div class="sidebar" class:sidebar--offset-controls={offsetWindowControls}>
   <Section title="Docs">
     <DocList />
   </Section>
@@ -23,5 +25,9 @@
     border-right: var(--border);
     padding: 1rem;
     overflow-y: auto;
+  }
+
+  .sidebar--offset-controls {
+    padding-top: 3rem;
   }
 </style>
