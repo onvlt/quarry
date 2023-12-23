@@ -23,7 +23,9 @@
 
 <style>
   span {
+    -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
+
     padding: 0.22em 0;
     border-radius: 0.1em;
   }
