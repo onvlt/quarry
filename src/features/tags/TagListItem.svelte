@@ -3,7 +3,7 @@
   import type { Tag } from "./types";
 
   export let tag: Tag;
-  export let focused: boolean;
+  export let focused: boolean = false;
 </script>
 
 <NavItem on:click {focused}>
