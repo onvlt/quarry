@@ -5,9 +5,9 @@ export interface Segment {
   tags: Set<Tag>;
 }
 
-export type SegmentKey = `${number}-${number}`;
+export type SegmentId = `${number}-${number}`;
 
-export type Segments = Map<SegmentKey, Segment>;
+export type Segments = Map<SegmentId, Segment>;
 
 export interface TextRange {
   start: number;

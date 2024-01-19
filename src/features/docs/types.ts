@@ -1,4 +1,9 @@
-import type { SegmentKey, Segments, TextRange } from "../segments/types";
+import type {
+  Segment,
+  SegmentId,
+  Segments,
+  TextRange,
+} from "../segments/types";
 
 export type DocId = number;
 
@@ -9,16 +14,19 @@ export interface Doc {
   segments: Segments;
 }
 
-export type DocMode = "normal" | "selection";
-
-export interface DocState {
-  mode: DocMode;
-  doc: Doc;
-  selectionRange: TextRange | null;
-  selectedSegmentKey: SegmentKey | null;
-}
+export type DocState =
+  | {
+      mode: "normal";
+      doc: Doc;
+    }
+  | {
+      mode: "selection";
+      doc: Doc;
+      selectedSegment: Segment;
+      selectedSegmentId: SegmentId;
+    };
 
 export interface Span {
   range: TextRange;
-  segments: Set<SegmentKey>;
+  segments: Set<SegmentId>;
 }

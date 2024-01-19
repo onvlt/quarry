@@ -5,7 +5,7 @@
     box-decoration-break: clone;
     padding: 0.22em 0;
     border-radius: 0.1em;
-    background-color: var(--accent-secondary-10);
-    color: black;
+    background-color: var(--accent-4);
+    color: var(--accent-12);
   }
 </style>

@@ -11,12 +11,6 @@ export function toSpans(state: DocState) {
     }
   }
 
-  if (state.selectionRange) {
-    for (const index of rangeToTuple(state.selectionRange)) {
-      bounds.add(index);
-    }
-  }
-
   const segmentsArray = Array.from(state.doc.segments);
   const sortedBounds = Array.from(bounds).sort((a, b) => a - b);
   const spans: Array<Span> = [];

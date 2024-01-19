@@ -1,84 +1,85 @@
 import { writable } from "svelte/store";
 import type { Doc, DocState } from "./types";
-import type { SegmentKey, TextRange } from "../segments/types";
+import type { Segment, SegmentId, TextRange } from "../segments/types";
 import { _tags } from "../tags/store";
 import type { Tag } from "../tags/types";
-import { rangeToKey } from "../segments/helpers";
-
-function toSelectionMode(state: DocState, range: TextRange): DocState {
-  return {
-    ...state,
-    mode: "selection",
-    selectionRange: range,
-    selectedSegmentKey: rangeToKey(range),
-  };
-}
-
-function toNormalMode(
-  state: DocState,
-  selectedSegmentKey: SegmentKey | null = null
-): DocState {
-  return {
-    ...state,
-    mode: "normal",
-    selectionRange: null,
-    selectedSegmentKey,
-  };
-}
+import { segmentIdFromRange } from "../segments/helpers";
 
 function createDocStore() {
   const { subscribe, set, update } = writable<DocState | null>(null);
 
   function setDocument(doc: Doc) {
-    set({
-      doc,
-      mode: "normal",
-      selectionRange: null,
-      selectedSegmentKey: null,
+    set({ mode: "normal", doc });
+  }
+
+  function createSegment(range: TextRange) {
+    update((state) => {
+      if (!state) {
+        return null;
+      }
+
+      // If selection is empty, do nothing.
+      if (range.start === range.end) {
+        return state;
+      }
+
+      const segmentId = segmentIdFromRange(range);
+      const segment = state.doc.segments.get(segmentId) ?? {
+        range,
+        tags: new Set(),
+      };
+      state.doc.segments.set(segmentId, segment);
+
+      return {
+        ...state,
+        mode: "selection",
+        selectedSegment: segment,
+        selectedSegmentId: segmentIdFromRange(range),
+      };
     });
   }
 
-  function selectionMode(range: TextRange) {
+  function selectSegment(segment: Segment) {
     update((state) => {
-      if (state) {
-        if (range.start === range.end) {
-          return toNormalMode(state);
-        }
-        return toSelectionMode(state, range);
+      if (!state) {
+        return null;
       }
-      return null;
+
+      return {
+        ...state,
+        mode: "selection",
+        selectedSegment: segment,
+        selectedSegmentId: segmentIdFromRange(segment.range),
+      };
     });
   }
 
-  function normalMode(selectedSegmentKey: SegmentKey | null = null) {
+  function unselectSegment() {
     update((state) => {
-      if (state) {
-        return toNormalMode(state, selectedSegmentKey);
+      if (!state) {
+        return null;
       }
-      return null;
+
+      return {
+        doc: state.doc,
+        mode: "normal",
+      };
     });
   }
 
   function toggleTag(tag: Tag) {
     update((state) => {
-      if (state && state.mode === "selection" && state.selectionRange) {
-        const { selectionRange } = state;
-        const key = rangeToKey(selectionRange);
-        const segment = state.doc.segments.get(key) ?? {
-          range: selectionRange,
-          tags: new Set(),
-        };
+      if (state && state.mode === "selection") {
+        const segment = state.doc.segments.get(state.selectedSegmentId);
+
+        if (!segment) {
+          return state;
+        }
 
         if (segment.tags.has(tag)) {
           segment.tags.delete(tag);
         } else {
           segment.tags.add(tag);
-        }
-
-        if (segment.tags.size > 0) {
-          state.doc.segments.set(key, segment);
-        } else {
-          state.doc.segments.delete(key);
         }
       }
 
@@ -89,8 +90,9 @@ function createDocStore() {
   return {
     subscribe,
     setDocument,
-    toNormalMode: normalMode,
-    toSelectionMode: selectionMode,
+    createSegment,
+    selectSegment,
+    unselectSegment,
     toggleTag,
   };
 }

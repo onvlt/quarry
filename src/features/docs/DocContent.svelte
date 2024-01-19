@@ -1,12 +1,11 @@
 <script lang="ts">
   import { toSpans } from "./helpers";
   import { docState } from "./store";
-  import SelectionModal from "../tags/SelectionModal.svelte";
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
   import type { Span } from "./types";
   import { rangeFromTuple } from "../segments/helpers";
-  import Selection from "./Selection.svelte";
+  import SelectedSpan from "./SelectedSpan.svelte";
 
   let self: HTMLElement;
 
@@ -43,21 +42,12 @@
     if (event.key === "Enter") {
       const selectionRange = getValidSelection();
       if (selectionRange) {
-        docState.toSelectionMode(selectionRange);
+        docState.createSegment(selectionRange);
       }
     }
 
     if (event.key === "Escape") {
-      docState.toNormalMode();
-    }
-  }
-
-  function handleMouseUp() {
-    if ($docState && $docState.mode === "selection") {
-      const selectionRange = getValidSelection();
-      if (selectionRange) {
-        docState.toSelectionMode(selectionRange);
-      }
+      docState.unselectSegment();
     }
   }
 
@@ -77,42 +67,33 @@
 
   $: spans = toSpans($docState!);
   $: separatedSpans =
-    $docState?.mode === "selection" && $docState.selectionRange
-      ? separateSelectedSpans($docState.selectionRange, spans)
+    $docState?.mode === "selection"
+      ? separateSelectedSpans($docState.selectedSegment.range, spans)
       : null;
 </script>
 
 <svelte:window on:keyup={handleKeyUp} />
 
-<div
-  class="doc"
-  bind:this={self}
-  on:mouseup={handleMouseUp}
-  role="textbox"
-  tabindex="0"
->
+<div class="doc" bind:this={self} role="textbox" tabindex="0">
   {#if separatedSpans}
     {#each separatedSpans.beforeSelection as span}<DocSpan
         {span}
-      />{/each}<Selection
+      />{/each}<SelectedSpan
       >{#each separatedSpans.selection as span}<DocSpan
+          isWithinSelection
           {span}
-          selected
-        />{/each}</Selection
+        />{/each}</SelectedSpan
     >{#each separatedSpans.afterSelection as span}<DocSpan {span} />{/each}
   {:else}
     {#each spans as span}<DocSpan {span} />{/each}
   {/if}
 </div>
 
-{#if $docState && $docState.mode === "selection"}
-  <SelectionModal />
-{/if}
-
 <style>
   .doc {
     max-width: 600px;
     white-space: pre-wrap;
     padding: 1rem;
+    color: var(--gray-11);
   }
 </style>
