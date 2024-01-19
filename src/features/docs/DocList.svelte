@@ -6,7 +6,7 @@
 
   function onClick(event: Event, doc: Doc) {
     event.preventDefault();
-    docState.setDocument(doc);
+    docState.openDoc(doc);
   }
 </script>
 

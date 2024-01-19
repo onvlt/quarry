@@ -8,7 +8,7 @@ import { segmentIdFromRange } from "../segments/helpers";
 function createDocStore() {
   const { subscribe, set, update } = writable<DocState | null>(null);
 
-  function setDocument(doc: Doc) {
+  function openDoc(doc: Doc) {
     set({ mode: "normal", doc });
   }
 
@@ -89,7 +89,7 @@ function createDocStore() {
 
   return {
     subscribe,
-    setDocument,
+    openDoc,
     createSegment,
     selectSegment,
     unselectSegment,
