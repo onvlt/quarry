@@ -28,17 +28,19 @@
   }
 
   function separateSelectedSpans(selection: TextRange, spans: Array<Span>) {
-    return {
-      beforeSelection: spans.filter(
-        (span) => span.range.end <= selection.start,
-      ),
-      selection: spans.filter(
-        (span) =>
-          span.range.start >= selection.start &&
-          span.range.end <= selection.end,
-      ),
-      afterSelection: spans.filter((span) => span.range.start >= selection.end),
-    };
+    const before: Array<Span> = [];
+    const within: Array<Span> = [];
+    const after: Array<Span> = [];
+    for (const span of spans) {
+      if (span.range.end <= selection.start) {
+        before.push(span);
+      } else if (span.range.start >= selection.end) {
+        after.push(span);
+      } else {
+        within.push(span);
+      }
+    }
+    return { before, within, after };
   }
 
   $: spans = toSpans($docState!);
@@ -52,14 +54,12 @@
 
 <div class="doc" bind:this={self} role="textbox" tabindex="0">
   {#if separatedSpans}
-    {#each separatedSpans.beforeSelection as span}<DocSpan
-        {span}
-      />{/each}<SelectedSpan
-      >{#each separatedSpans.selection as span}<DocSpan
+    {#each separatedSpans.before as span}<DocSpan {span} />{/each}<SelectedSpan
+      >{#each separatedSpans.within as span}<DocSpan
           isWithinSelection
           {span}
         />{/each}</SelectedSpan
-    >{#each separatedSpans.afterSelection as span}<DocSpan {span} />{/each}
+    >{#each separatedSpans.after as span}<DocSpan {span} />{/each}
   {:else}
     {#each spans as span}<DocSpan {span} />{/each}
   {/if}
