@@ -1,7 +1,6 @@
 :root {
   font-family: system-ui;
   font-size: 16px;
-  line-height: 24px;
   font-weight: 400;
 
   color: var(--gray-12);
@@ -68,9 +67,12 @@
 
 body {
   margin: 0;
+  line-height: 1.5;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -86,16 +88,26 @@ button {
   outline: none;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   font: inherit;
   margin: 0;
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
   margin: 0;
   padding: 0;

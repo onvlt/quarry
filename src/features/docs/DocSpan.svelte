@@ -20,9 +20,9 @@
   .segment:not(.within-selection) {
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
-    padding: 0.22em 0;
+    padding: 0.12em 0;
     border-radius: 0.1em;
     background-color: var(--accent-2);
-    color: var(--accent-11);
+    border-bottom: 2px solid var(--accent-6);
   }
 </style>
