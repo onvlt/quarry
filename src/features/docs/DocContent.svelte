@@ -4,45 +4,21 @@
   import type { TextRange } from "../segments/types";
   import DocSpan from "./DocSpan.svelte";
   import type { Span } from "./types";
-  import { rangeFromTuple } from "../segments/helpers";
   import SelectedSpan from "./SelectedSpan.svelte";
+  import { textRangeFromSelection } from "./selection-utils";
 
   let self: HTMLElement;
 
-  function getValidSelection(): TextRange | null {
-    const selection = document.getSelection();
-    if (
-      selection &&
-      self.contains(selection.anchorNode) &&
-      self.contains(selection.focusNode)
-    ) {
-      if (
-        selection.anchorNode?.parentElement instanceof HTMLSpanElement &&
-        selection.focusNode?.parentElement instanceof HTMLSpanElement
-      ) {
-        const anchorSpanOffset = Number(
-          selection.anchorNode.parentElement.dataset.start,
-        );
-        const focusSpanOffset = Number(
-          selection.focusNode.parentElement.dataset.start,
-        );
-
-        const selectionRange = rangeFromTuple([
-          selection.anchorOffset + anchorSpanOffset,
-          selection.focusOffset + focusSpanOffset,
-        ]);
-
-        return selectionRange;
-      }
-    }
-    return null;
-  }
-
   function handleKeyUp(event: KeyboardEvent) {
     if (event.key === "Enter") {
-      const selectionRange = getValidSelection();
-      if (selectionRange) {
-        docState.createSegment(selectionRange);
+      const selection = document.getSelection();
+
+      if (selection) {
+        const selectionRange = textRangeFromSelection(selection, self);
+        if (selectionRange) {
+          selection.removeAllRanges();
+          docState.createSegment(selectionRange);
+        }
       }
     }
 
