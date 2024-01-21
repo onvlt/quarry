@@ -61,9 +61,24 @@ function createDocStore() {
       }
 
       return {
-        doc: state.doc,
+        ...state,
         mode: "normal",
       };
+    });
+  }
+
+  function deleteSegment() {
+    update((state) => {
+      if (state && state.mode === "selection") {
+        state.doc.segments.delete(state.selectedSegmentId);
+
+        return {
+          ...state,
+          mode: "normal",
+        };
+      }
+
+      return state;
     });
   }
 
@@ -93,6 +108,7 @@ function createDocStore() {
     createSegment,
     selectSegment,
     unselectSegment,
+    deleteSegment,
     toggleTag,
   };
 }

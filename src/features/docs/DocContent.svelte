@@ -25,6 +25,10 @@
     if (event.key === "Escape") {
       docState.unselectSegment();
     }
+
+    if (event.key === "Backspace") {
+      docState.deleteSegment();
+    }
   }
 
   function separateSelectedSpans(selection: TextRange, spans: Array<Span>) {
