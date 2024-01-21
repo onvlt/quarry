@@ -7,9 +7,26 @@
   export let isWithinSelection: boolean = false;
 
   $: content = $docState!.doc.content.substring(...rangeToTuple(span.range));
+
+  function handleClick() {
+    if (!$docState) {
+      return;
+    }
+    if (span.segments.size !== 0) {
+      const segmentId = Array.from(span.segments)[0];
+      const segment = $docState.doc.segments.get(segmentId);
+
+      if (segment) {
+        docState.selectSegment(segment);
+      }
+    }
+  }
+
+  // TODO: fix accesibility
 </script>
 
 <span
+  on:click={handleClick}
   data-start={span.range.start}
   data-segments={JSON.stringify(Array.from(span.segments))}
   class:segment={span.segments.size > 0}
