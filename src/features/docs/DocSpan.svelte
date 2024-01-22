@@ -7,12 +7,13 @@
   export let isWithinSelection: boolean = false;
 
   $: content = $docState!.doc.content.substring(...rangeToTuple(span.range));
+  $: isInteractive = span.segments.size > 0;
 
   function handleClick() {
     if (!$docState) {
       return;
     }
-    if (span.segments.size !== 0) {
+    if (span.segments.size > 0) {
       const segmentId = Array.from(span.segments)[0];
       const segment = $docState.doc.segments.get(segmentId);
 
@@ -26,7 +27,9 @@
 </script>
 
 <span
-  on:click={handleClick}
+  role={isInteractive ? "button" : undefined}
+  tabindex={isInteractive ? 0 : undefined}
+  on:click={isInteractive ? handleClick : undefined}
   data-start={span.range.start}
   data-segments={JSON.stringify(Array.from(span.segments))}
   class:segment={span.segments.size > 0}
@@ -41,5 +44,9 @@
     border-radius: 0.1em;
     background-color: var(--accent-secondary-2);
     border-bottom: 2px solid var(--accent-secondary-6);
+  }
+
+  [role="button"] {
+    cursor: pointer;
   }
 </style>
