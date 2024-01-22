@@ -106,8 +106,29 @@ function createDocStore() {
     });
   }
 
+  function hoverSegment(id: SegmentId) {
+    update((state) => {
+      if (!state) {
+        return null;
+      }
+
+      state.hoveredSegmentId = id;
+      return state;
+    });
+  }
+
+  function unhoverSegment() {
+    update((state) => {
+      if (!state) {
+        return null;
+      }
+
+      state.hoveredSegmentId = null;
+      return state;
+    });
+  }
+
   return {
-    set,
     subscribe,
     openDoc,
     createSegment,
@@ -115,6 +136,8 @@ function createDocStore() {
     unselectSegment,
     deleteSegment,
     toggleTag,
+    hoverSegment,
+    unhoverSegment,
   };
 }
 

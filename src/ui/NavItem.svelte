@@ -1,10 +1,19 @@
 <script lang="ts">
   export let focused: boolean = false;
   export let active: boolean = false;
+  export let highlighted: boolean = false;
 </script>
 
 <li>
-  <button on:click class:focused class:active {...$$props}><slot /></button>
+  <button
+    on:click
+    on:mouseenter
+    on:mouseleave
+    class:focused
+    class:active
+    class:highlighted
+    {...$$props}><slot /></button
+  >
 </li>
 
 <style>
@@ -28,6 +37,11 @@
   button.active {
     background-color: var(--accent-3);
     font-weight: 500;
+    color: var(--accent-11);
+  }
+
+  button.highlighted {
+    background-color: var(--accent-2);
     color: var(--accent-11);
   }
 

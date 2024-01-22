@@ -27,11 +27,11 @@
   }
 
   function handleMouseOver() {
-    $docState!.hoveredSegmentId = Array.from(span.segments)[0];
+    docState.hoverSegment(Array.from(span.segments)[0]);
   }
 
   function handleMouseLeave() {
-    $docState!.hoveredSegmentId = null;
+    docState.unhoverSegment();
   }
 
   // TODO: fix accesibility
