@@ -9,7 +9,11 @@ function createDocStore() {
   const { subscribe, set, update } = writable<DocState | null>(null);
 
   function openDoc(doc: Doc) {
-    set({ mode: "normal", doc });
+    set({
+      doc,
+      hoveredSegmentId: null,
+      mode: "normal",
+    });
   }
 
   function createSegment(range: TextRange) {
@@ -103,6 +107,7 @@ function createDocStore() {
   }
 
   return {
+    set,
     subscribe,
     openDoc,
     createSegment,

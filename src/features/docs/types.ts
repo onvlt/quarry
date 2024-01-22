@@ -14,17 +14,22 @@ export interface Doc {
   segments: Segments;
 }
 
-export type DocState =
+type SharedDocState = {
+  doc: Doc;
+  hoveredSegmentId: SegmentId | null;
+};
+
+type ModalDocState =
   | {
       mode: "normal";
-      doc: Doc;
     }
   | {
       mode: "selection";
-      doc: Doc;
       selectedSegment: Segment;
       selectedSegmentId: SegmentId;
     };
+
+export type DocState = SharedDocState & ModalDocState;
 
 export interface Span {
   range: TextRange;

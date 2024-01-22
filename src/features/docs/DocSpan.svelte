@@ -8,6 +8,9 @@
 
   $: content = $docState!.doc.content.substring(...rangeToTuple(span.range));
   $: isInteractive = span.segments.size > 0;
+  $: isPartOfHoveredSegment =
+    $docState?.hoveredSegmentId &&
+    span.segments.has($docState.hoveredSegmentId);
 
   function handleClick() {
     if (!$docState) {
@@ -23,6 +26,14 @@
     }
   }
 
+  function handleMouseOver() {
+    $docState!.hoveredSegmentId = Array.from(span.segments)[0];
+  }
+
+  function handleMouseLeave() {
+    $docState!.hoveredSegmentId = null;
+  }
+
   // TODO: fix accesibility
 </script>
 
@@ -30,8 +41,10 @@
   role={isInteractive ? "button" : undefined}
   tabindex={isInteractive ? 0 : undefined}
   on:click={isInteractive ? handleClick : undefined}
+  on:mouseover={handleMouseOver}
+  on:mouseleave={handleMouseLeave}
   data-start={span.range.start}
-  data-segments={JSON.stringify(Array.from(span.segments))}
+  class:hover={isPartOfHoveredSegment}
   class:segment={span.segments.size > 0}
   class:within-selection={isWithinSelection}>{content}</span
 >
@@ -44,6 +57,14 @@
     border-radius: 0.1em;
     background-color: var(--accent-secondary-2);
     border-bottom: 2px solid var(--accent-secondary-6);
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease;
+
+    &.hover {
+      background-color: var(--accent-secondary-4);
+      border-bottom: 2px solid var(--accent-secondary-8);
+    }
   }
 
   [role="button"] {
