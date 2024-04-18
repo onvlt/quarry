@@ -1,10 +1,6 @@
-# Tauri + Svelte + Typescript
+# Quarry ⛏️
 
-This template should help get you started developing with Tauri, Svelte and TypeScript in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
+Experimental qualitative data analysis (QDA) software for mining menaning out of text, written with Rust/Tauri and TypeScript/Svelte (Work in progress).
 
 ## Minimal to-do
 
